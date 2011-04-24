@@ -55,4 +55,9 @@ public class NPCManager {
             npc.move(l.getX(), l.getY(), l.getZ());
         }
     }
+	
+	
+    public NPCEntity getNPC(String name){
+        return npcs.get(name);
+    }
 }
