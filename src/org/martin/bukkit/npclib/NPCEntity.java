@@ -109,4 +109,18 @@ public class NPCEntity extends EntityPlayer {
     public void move(double x, double y, double z) {
         super.move(x, y, z);
     }
+	
+	public void setItemInHand(Material m) {
+        ItemStack s = this.inventory.getItemInHand();
+        if (s == null) {
+            this.inventory.setItem(0, new ItemStack(Item.byId[m.getId()]));
+        } else {
+            for(int i = 0 ; i < this.inventory.getContents().length ; i++){
+                if(this.inventory.getContents()[i] == s){
+                    this.inventory.setItem(i, new ItemStack(Item.byId[m.getId()]));
+                    break;
+                }
+            }
+        }
+    }
 }
