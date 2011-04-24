@@ -8,9 +8,7 @@ import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityLiving;
 import net.minecraft.server.EntityPlayer;
-import net.minecraft.server.Item;
 import net.minecraft.server.ItemInWorldManager;
-import net.minecraft.server.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.NetHandler;
 import net.minecraft.server.NetworkManager;
@@ -20,6 +18,8 @@ import net.minecraft.server.WorldServer;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.event.entity.EntityTargetEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.entity.HumanEntity;
 
 /**
  *
@@ -113,17 +113,7 @@ public class NPCEntity extends EntityPlayer {
         super.move(x, y, z);
     }
 	
-	public void setItemInHand(Material m) {
-        ItemStack s = this.inventory.getItemInHand();
-        if (s == null) {
-            this.inventory.setItem(0, new ItemStack(Item.byId[m.getId()]));
-        } else {
-            for(int i = 0 ; i < this.inventory.getContents().length ; i++){
-                if(this.inventory.getContents()[i] == s){
-                    this.inventory.setItem(i, new ItemStack(Item.byId[m.getId()]));
-                    break;
-                }
-            }
-        }
+    public void setItemInHand(Material m) {
+		((HumanEntity) getBukkitEntity()).setItemInHand(new ItemStack(m, 1));
     }
 }
