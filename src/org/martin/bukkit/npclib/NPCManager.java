@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.martin.bukkit.npclib;
 
 import java.util.HashMap;
@@ -37,9 +33,6 @@ public class NPCManager {
         NPCEntity npcEntity = new NPCEntity(server.getMCServer(), world.getWorldServer(), name, new ItemInWorldManager(world.getWorldServer()));
         npcEntity.setPositionRotation(l.getBlockX(), l.getBlockY(), l.getBlockZ(), l.getYaw(), l.getPitch());
         world.getWorldServer().getChunkAt(l.getWorld().getChunkAt(l).getX(), l.getWorld().getChunkAt(l).getZ()).a(npcEntity);
-        //world.getWorldServer().manager.addPlayer(npcEntity);
-        //server.getEntityTracker().a(npcEntity);
-        //server.getEntityTracker().trackPlayer(npcEntity);
         world.getWorldServer().addEntity(npcEntity); //the right way
         npcs.put(name, npcEntity);
         return npcEntity;

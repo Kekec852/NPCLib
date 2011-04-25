@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package org.martin.bukkit.npclib;
 
 import java.util.ArrayList;
@@ -108,7 +103,7 @@ public class BWorld {
                 double z = loc.getZ() + 0.5;
                 double radius = 10;
 
-                List<Entity> entities = new ArrayList();
+                List<Entity> entities = new ArrayList<Entity>();
                 AxisAlignedBB bb = AxisAlignedBB.a(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius);
                 entities = craftWorld.getHandle().b(craftPlayer.getHandle(), bb);
                 for (Entity o : entities) {
