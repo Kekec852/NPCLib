@@ -29,7 +29,7 @@ public class NPCManager {
     public NPCEntity spawnNPC(String name, Location l) {
     	if (name.length() > 16) { // Check and nag if name is too long, spawn NPC anyway with shortened name.
     		String tmp = name.substring(0, 16);
-    		server.getLogger().log(Level.WARNING, "NPCs can't have names longer than 16 charecters,");
+    		server.getLogger().log(Level.WARNING, "NPCs can't have names longer than 16 characters,");
     		server.getLogger().log(Level.WARNING, name + " has been shortened to " + tmp);
     		name = tmp;
     	}
