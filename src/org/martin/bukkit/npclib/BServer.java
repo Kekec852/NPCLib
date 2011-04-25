@@ -80,6 +80,10 @@ public class BServer {
         }
     }
 
+    public Logger getLogger() {
+    	return cServer.getLogger();
+    }
+    
     public List<WorldServer> getWorldServers(){
         return mcServer.worlds;
     }
