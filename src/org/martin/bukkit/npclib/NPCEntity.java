@@ -112,4 +112,8 @@ public class NPCEntity extends EntityPlayer {
     public void setItemInHand(Material m) {
         ((HumanEntity) getBukkitEntity()).setItemInHand(new ItemStack(m, 1));
     }
+
+    public void setName(String name){
+        this.name = name;
+    }
 }
