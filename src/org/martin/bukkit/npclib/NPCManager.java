@@ -90,8 +90,15 @@ public class NPCManager {
             npcs.remove(n);
         }
     }
-
+    
     public void moveNPC(String npcName, Location l) {
+        NPCEntity npc = npcs.get(npcName);
+        if (npc != null) {
+            npc.setPositionRotation(l.getX(), l.getY(), l.getZ(), l.getYaw(), l.getPitch());
+        }
+    }
+
+    public void moveNPCStatic(String npcName, Location l) {
         NPCEntity npc = npcs.get(npcName);
         if (npc != null) {
             npc.move(l.getX(), l.getY(), l.getZ());
@@ -125,10 +132,10 @@ public class NPCManager {
         try {
             Method m = s.getClass().getDeclaredMethod("d", new Class[]{Entity.class});
             m.setAccessible(true);
-            m.invoke(s, (Entity)npc);
+            m.invoke(s, (Entity) npc);
             m = s.getClass().getDeclaredMethod("c", new Class[]{Entity.class});
             m.setAccessible(true);
-            m.invoke(s, (Entity)npc);
+            m.invoke(s, (Entity) npc);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
