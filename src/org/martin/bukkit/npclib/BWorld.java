@@ -90,7 +90,7 @@ public class BWorld {
     }
 
     @SuppressWarnings("unchecked")
-	public void removeEntity(String name,final Player player,JavaPlugin plugin){
+    public void removeEntity(String name,final Player player,JavaPlugin plugin){
         server.getServer().getScheduler().callSyncMethod(plugin, new Callable<Object>() {
 
             public Object call() throws Exception {
