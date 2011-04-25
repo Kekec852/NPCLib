@@ -37,12 +37,12 @@ public class NPCManager {
         return npcEntity;
     }
 
-    public void despawn(String id) {
-        NPCEntity npc = npcs.get(id);
+    public void despawn(String npcName) {
+        NPCEntity npc = npcs.get(npcName);
         if (npc != null) {
-            npcs.remove(id);
+            npcs.remove(npcName);
             try {
-                npc.world.removeEntity(npc);
+                npc.world.removeEntity(npcNpc);
             } catch (Exception e) {
                 e.printStackTrace();
             }
