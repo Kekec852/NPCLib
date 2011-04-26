@@ -10,7 +10,6 @@ import net.minecraft.server.Entity;
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.EnumSkyBlock;
 import net.minecraft.server.PlayerManager;
-//import net.minecraft.server.WorldManager;
 import net.minecraft.server.WorldProvider;
 import net.minecraft.server.WorldServer;
 import org.bukkit.Location;
@@ -33,8 +32,8 @@ public class BWorld {
     private net.minecraft.server.World mcWorld;
     private WorldServer wServer;
     private WorldProvider wProvider;
-    //private WorldManager wManager;
-    public BWorld(BServer server, String worldName){
+
+    public BWorld(BServer server, String worldName) {
         this.server = server;
         world = server.getServer().getWorld(worldName);
         try {
@@ -46,7 +45,7 @@ public class BWorld {
         }
     }
 
-    public BWorld(World world){
+    public BWorld(World world) {
         this.world = world;
         try {
             cWorld = (CraftWorld) world;
@@ -57,23 +56,23 @@ public class BWorld {
         }
     }
 
-    public PlayerManager getPlayerManager(){
+    public PlayerManager getPlayerManager() {
         return wServer.manager;
     }
 
-    public CraftWorld getCraftWorld(){
+    public CraftWorld getCraftWorld() {
         return cWorld;
     }
 
-    public WorldServer getWorldServer(){
+    public WorldServer getWorldServer() {
         return wServer;
     }
 
-    public net.minecraft.server.World getMCWorld(){
+    public net.minecraft.server.World getMCWorld() {
         return mcWorld;
     }
 
-    public WorldProvider getWorldProvider(){
+    public WorldProvider getWorldProvider() {
         return wProvider;
     }
 
@@ -85,12 +84,12 @@ public class BWorld {
         return wServer.a(null, l.getX(), l.getY(), l.getZ(), power).wasCanceled ? false : true;
     }
 
-    public void setLightLevel(Block block, final int level){
+    public void setLightLevel(Block block, final int level) {
         wServer.b(EnumSkyBlock.BLOCK, block.getX(), block.getY(), block.getZ(), level);
     }
 
     @SuppressWarnings("unchecked")
-    public void removeEntity(String name,final Player player,JavaPlugin plugin){
+    public void removeEntity(String name, final Player player, JavaPlugin plugin) {
         server.getServer().getScheduler().callSyncMethod(plugin, new Callable<Object>() {
 
             public Object call() throws Exception {

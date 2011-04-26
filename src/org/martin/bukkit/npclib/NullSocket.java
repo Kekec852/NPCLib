@@ -11,16 +11,15 @@ import java.net.Socket;
  * @author martin
  */
 public class NullSocket extends Socket {
+
     @Override
-    public InputStream getInputStream()
-    {
+    public InputStream getInputStream() {
         byte[] buf = new byte[1];
         return new ByteArrayInputStream(buf);
     }
 
     @Override
-    public OutputStream getOutputStream()
-    {
+    public OutputStream getOutputStream() {
         return new ByteArrayOutputStream();
     }
 }

@@ -46,7 +46,7 @@ public class NPCEntity extends EntityPlayer {
         this.b.tracker.a(this, new Packet18ArmAnimation(this, 1));
     }
 
-    public void actAsHurt(){
+    public void actAsHurt() {
         this.b.tracker.a(this, new Packet18ArmAnimation(this, 2));
     }
 
@@ -108,12 +108,16 @@ public class NPCEntity extends EntityPlayer {
     public void move(double x, double y, double z) {
         super.move(x, y, z);
     }
-	
+
     public void setItemInHand(Material m) {
         ((HumanEntity) getBukkitEntity()).setItemInHand(new ItemStack(m, 1));
     }
 
-    public void setName(String name){
+    public void setName(String name) {
         this.name = name;
+    }
+
+    public String getName(){
+        return name;
     }
 }

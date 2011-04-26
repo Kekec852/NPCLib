@@ -21,11 +21,13 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @author Kekec852
  */
 public class BServer {
+
     private static BServer ins;
     private MinecraftServer mcServer;
     private CraftServer cServer;
     private Server server;
-    private HashMap<String,BWorld> worlds = new HashMap<String, BWorld>();
+    private HashMap<String, BWorld> worlds = new HashMap<String, BWorld>();
+
     private BServer(JavaPlugin plugin) {
         //Getting neede structures
         server = plugin.getServer();
@@ -81,35 +83,35 @@ public class BServer {
     }
 
     public Logger getLogger() {
-    	return cServer.getLogger();
+        return cServer.getLogger();
     }
-    
-    public List<WorldServer> getWorldServers(){
+
+    public List<WorldServer> getWorldServers() {
         return mcServer.worlds;
     }
 
-    public int getSpawnProtationRadius(){
+    public int getSpawnProtationRadius() {
         return mcServer.spawnProtection;
     }
 
-    public EntityTracker getEntityTracker(){
+    public EntityTracker getEntityTracker() {
         return mcServer.tracker;
     }
 
-    public PropertyManager getPropertyManager(){
+    public PropertyManager getPropertyManager() {
         return mcServer.propertyManager;
     }
 
-    public NetworkListenThread getNetworkThread(){
+    public NetworkListenThread getNetworkThread() {
         return mcServer.networkListenThread;
     }
 
-    public Server getServer(){
+    public Server getServer() {
         return server;
     }
 
-    public BWorld getWorld(String worldName){
-        if(worlds.containsKey(worldName)){
+    public BWorld getWorld(String worldName) {
+        if (worlds.containsKey(worldName)) {
             return worlds.get(worldName);
         }
         BWorld w = new BWorld(this, worldName);
@@ -117,21 +119,21 @@ public class BServer {
         return w;
     }
 
-    public static BServer getInstance(JavaPlugin pl){
-        if(ins == null){
+    public static BServer getInstance(JavaPlugin pl) {
+        if (ins == null) {
             ins = new BServer(pl);
         }
         return ins;
     }
 
-    public static BServer getInstance(Server pl){
-        if(ins == null){
+    public static BServer getInstance(Server pl) {
+        if (ins == null) {
             ins = new BServer(pl);
         }
         return ins;
     }
 
-    public MinecraftServer getMCServer(){
+    public MinecraftServer getMCServer() {
         return mcServer;
     }
 }

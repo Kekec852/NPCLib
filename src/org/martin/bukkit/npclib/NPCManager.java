@@ -90,18 +90,18 @@ public class NPCManager {
             npcs.remove(n);
         }
     }
-    
-    public void moveNPC(String npcName, Location l) {
-        NPCEntity npc = npcs.get(npcName);
+
+    public void moveNPC(String id, Location l) {
+        NPCEntity npc = npcs.get(id);
         if (npc != null) {
             npc.setPositionRotation(l.getX(), l.getY(), l.getZ(), l.getYaw(), l.getPitch());
         }
     }
 
-    public void moveNPCStatic(String npcName, Location l) {
-        NPCEntity npc = npcs.get(npcName);
+    public void moveNPCStatic(String id, Location l) {
+        NPCEntity npc = npcs.get(id);
         if (npc != null) {
-            npc.move(l.getX(), l.getY(), l.getZ());
+            npc.setPosition(l.getX(), l.getY(), l.getZ());
         }
     }
 
@@ -113,9 +113,15 @@ public class NPCManager {
         List<NPCEntity> ret = new ArrayList<NPCEntity>();
         Collection<NPCEntity> i = npcs.values();
         for (NPCEntity e : i) {
-            ret.add(e);
+            if (e.getName().equalsIgnoreCase(name)) {
+                ret.add(e);
+            }
         }
         return ret;
+    }
+
+    public List<NPCEntity> getNPCs(){
+        return new ArrayList(npcs.values());
     }
 
     public void rename(String id, String name) {

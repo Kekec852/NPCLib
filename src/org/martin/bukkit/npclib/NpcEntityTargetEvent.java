@@ -3,7 +3,6 @@ package org.martin.bukkit.npclib;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.EntityTargetEvent;
 
-
 public class NpcEntityTargetEvent extends EntityTargetEvent {
 
     private static final long serialVersionUID = -8103432985035183865L;
@@ -18,10 +17,7 @@ public class NpcEntityTargetEvent extends EntityTargetEvent {
         this.reason = reason;
     }
 
-
-    public NpcTargetReason getNpcReason()
-    {
+    public NpcTargetReason getNpcReason() {
         return this.reason;
     }
-
 }
