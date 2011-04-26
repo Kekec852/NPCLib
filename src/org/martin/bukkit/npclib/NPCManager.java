@@ -121,7 +121,7 @@ public class NPCManager {
     }
 
     public List<NPCEntity> getNPCs(){
-        return new ArrayList(npcs.values());
+        return new ArrayList<NPCEntity>(npcs.values());
     }
 
     public void rename(String id, String name) {
