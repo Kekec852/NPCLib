@@ -90,6 +90,17 @@ public class NPCManager {
             npcs.remove(n);
         }
     }
+    
+    public void pathFindNPC(String id, Location l) {
+        pathFindNPC(id, l, 1000);
+    }
+    
+    public void pathFindNPC(String id, Location l, int maxIterations) {
+        NPCEntity npc = npcs.get(id);
+        if (npc != null) {
+            npc.pathFindTo(l, maxIterations);
+        }
+    }
 
     public void moveNPC(String id, Location l) {
         NPCEntity npc = npcs.get(id);
