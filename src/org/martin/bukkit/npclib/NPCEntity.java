@@ -36,10 +36,12 @@ public class NPCEntity extends EntityPlayer {
     private Block last;
     private Timer t = new Timer();
     private Location end;
+    private int maxIter;
     
     public void pathFindTo(Location l, int maxIterations) {
         path = new NPCPath(getBukkitEntity().getLocation(), l, maxIterations);
         end = l;
+        maxIter = maxIterations;
         t.schedule(new movePath(), 300);
     }
     
@@ -51,11 +53,15 @@ public class NPCEntity extends EntityPlayer {
                 Block b = path.getNextBlock();
                 float angle = yaw;
                 if (b != null) {
-                    if (last != null) {
-                        angle = ((float) Math.toDegrees(Math.atan2(last.getZ() - b.getZ(), last.getX() - b.getX()))) + 90;
+                    if (path.standon.contains(b.getType())) {
+                        if (last != null) {
+                            angle = ((float) Math.toDegrees(Math.atan2(last.getZ() - b.getZ(), last.getX() - b.getX()))) + 90;
+                        }
+                        setPositionRotation(b.getX() + 0.5, b.getY(), b.getZ() + 0.5, angle, pitch);
+                        t.schedule(new movePath(), 300);
+                    } else {
+                        pathFindTo(end, maxIter);
                     }
-                    setPositionRotation(b.getX() + 0.5, b.getY(), b.getZ() + 0.5, angle, pitch);
-                    t.schedule(new movePath(), 300);
                 } else if (last != null) {
                     setPositionRotation(end.getX(), end.getY(), end.getZ(), end.getYaw(), end.getPitch());
                 }
