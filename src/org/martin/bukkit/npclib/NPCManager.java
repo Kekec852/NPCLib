@@ -92,7 +92,7 @@ public class NPCManager {
     }
     
     public void pathFindNPC(String id, Location l) {
-        pathFindNPC(id, l, 1000);
+        pathFindNPC(id, l, 1500);
     }
     
     public void pathFindNPC(String id, Location l, int maxIterations) {

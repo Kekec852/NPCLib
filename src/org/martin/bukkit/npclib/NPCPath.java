@@ -135,9 +135,7 @@ public class NPCPath {
     }
     
     private void scoreBlock(Node node, Node parent) {
-        boolean xZDiagonal = (node.xPos != parent.xPos && node.zPos != parent.zPos);
-        boolean xYDiagonal = (node.xPos != parent.xPos && node.yPos != parent.yPos);
-        boolean yZDiagonal = (node.yPos != parent.yPos && node.zPos != parent.zPos);
+        int diagonal = ((node.xPos != parent.xPos && node.zPos != parent.zPos) || (node.xPos != parent.xPos && node.yPos != parent.yPos) || (node.yPos != parent.yPos && node.zPos != parent.zPos))  ? 14 : 10;
         
         Node nodeBelow = getNode(node.b.getRelative(0, -1, 0));
         Node nodeAbove = getNode(node.b.getRelative(0, 1, 0));
@@ -145,22 +143,18 @@ public class NPCPath {
         if ((node.notsolid && (!nodeBelow.notsolid || (nodeBelow.liquid && node.liquid)) && nodeAbove.notsolid) || node == endNode) {
             if (!open.contains(node) && !closed.contains(node)) {
                 node.parent = parent;
-                node.g = parent.g + ((xZDiagonal || xYDiagonal || yZDiagonal) ? 14 : 10);
+                node.g = parent.g + diagonal;
                 
-                int difX = endNode.xPos - node.xPos;
-                int difY = endNode.yPos - node.yPos;
-                int difZ = endNode.zPos - node.zPos;
-                
-                if(difX < 0) difX = difX * -1;
-                if(difY < 0) difY = difY * -1;
-                if(difZ < 0) difZ = difZ * -1;
+                int difX = Math.abs(endNode.xPos - node.xPos);
+                int difY = Math.abs(endNode.yPos - node.yPos);
+                int difZ = Math.abs(endNode.zPos - node.zPos);
                 
                 node.h = (difX + difY + difZ) * 10;
                 node.f = node.g + node.h;
                 
                 open.add(node);
             } else if (!closed.contains(node)) {
-                 int g = parent.g + ((xZDiagonal || xYDiagonal || yZDiagonal) ? 14 : 10);
+                 int g = parent.g + diagonal;
                  if (g < node.g) {
                      node.g = g;
                      node.parent = parent;
