@@ -22,6 +22,7 @@ import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.entity.HumanEntity;
+import org.martin.bukkit.npclib.NPCPath.Node;
 
 /**
  *
@@ -50,11 +51,13 @@ public class NPCEntity extends EntityPlayer {
         @Override
         public void run() {
             if (path != null) {
-                Block b = path.getNextBlock();
+                Node n = path.getNextNode();
+                Block b = null;
                 float angle = yaw;
                 float look = pitch;
-                if (b != null) {
-                    if (path.standon.contains(b.getType())) {
+                if (n != null) {
+                    if (path.checkPath(n, true)) {
+                        b = n.b;
                         if (last != null) {
                             angle = ((float) Math.toDegrees(Math.atan2(last.getX() - b.getX(), last.getZ() - b.getZ())));
                             look = (float) (Math.toDegrees(Math.asin(last.getY() - b.getY())) / 2);
