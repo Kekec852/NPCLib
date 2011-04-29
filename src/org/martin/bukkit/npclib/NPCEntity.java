@@ -52,12 +52,15 @@ public class NPCEntity extends EntityPlayer {
             if (path != null) {
                 Block b = path.getNextBlock();
                 float angle = yaw;
+                float look = pitch;
                 if (b != null) {
                     if (path.standon.contains(b.getType())) {
                         if (last != null) {
-                            angle = ((float) Math.toDegrees(Math.atan2(last.getZ() - b.getZ(), last.getX() - b.getX()))) + 90;
+                            angle = ((float) Math.toDegrees(Math.atan2(last.getX() - b.getX(), last.getZ() - b.getZ())));
+                            look = (float) (Math.toDegrees(Math.asin(last.getY() - b.getY())) / 2);
                         }
-                        setPositionRotation(b.getX() + 0.5, b.getY(), b.getZ() + 0.5, angle, pitch);
+                        System.out.println(angle);
+                        setPositionRotation(b.getX() + 0.5, b.getY(), b.getZ() + 0.5, angle, look);
                         t.schedule(new movePath(), 300);
                     } else {
                         pathFindTo(end, maxIter);

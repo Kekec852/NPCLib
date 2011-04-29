@@ -98,7 +98,13 @@ public class NPCManager {
     public void pathFindNPC(String id, Location l, int maxIterations) {
         NPCEntity npc = npcs.get(id);
         if (npc != null) {
-            npc.pathFindTo(l, maxIterations);
+            if (l.getWorld() == npc.getBukkitEntity().getWorld()) {
+                npc.pathFindTo(l, maxIterations);
+            } else {
+                String n = npc.name;
+                despawnById(id);
+                spawnNPC(n, l, id);
+            }
         }
     }
 
