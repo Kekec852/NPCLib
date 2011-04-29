@@ -23,17 +23,20 @@ public class NPCPath {
         int xPos, yPos, zPos;
         Node parent;
         Block b;
+        boolean notsolid, liquid;
         
         public Node(Block b) {
             this.b = b;
             xPos = b.getX();
             yPos = b.getY();
             zPos = b.getZ();
+            notsolid = standon.contains(b.getType());
+            liquid = liquids.contains(b.getType());
         }
         
     }
     
-    HashMap<Block, Node> nodes = new HashMap<Block, Node>();    
+    HashMap<Block, Node> nodes = new HashMap<Block, Node>();
     
     ArrayList<Node> path = new ArrayList<Node>();
     ArrayList<Node> open = new ArrayList<Node>();
@@ -41,22 +44,26 @@ public class NPCPath {
     
     Comparator<Node> nodeComp = new NodeComparator();
     
-    Node startBlock, endBlock;
+    Node startNode, endNode;
     Material[] nonSolid = {Material.AIR, Material.SAPLING, Material.POWERED_RAIL, Material.DETECTOR_RAIL, Material.RAILS, Material.YELLOW_FLOWER, Material.RED_ROSE, Material.RED_MUSHROOM, Material.BROWN_MUSHROOM, Material.TORCH, Material.FIRE, Material.REDSTONE_WIRE, Material.CROPS, Material.SIGN_POST, Material.WALL_SIGN, Material.LEVER, Material.STONE_BUTTON, Material.STONE_PLATE, Material.WOOD_PLATE, Material.REDSTONE_TORCH_OFF, Material.REDSTONE_TORCH_ON, Material.SUGAR_CANE_BLOCK, Material.DIODE_BLOCK_OFF, Material.DIODE_BLOCK_ON};
-    Material[] liquids = {Material.WATER, Material.STATIONARY_WATER, Material.LAVA, Material.STATIONARY_LAVA};
     List<Material> standon = new ArrayList<Material>();
+    List<Material> liquids = new ArrayList<Material>();
     
     public NPCPath(Location start, Location end, int maxIteractions) {
         init(start, end, maxIteractions);
     }
         
     private void init(Location s, Location e, int max) {
+        liquids.add(Material.WATER);
+        liquids.add(Material.STATIONARY_WATER);
+        liquids.add(Material.LAVA);
+        liquids.add(Material.STATIONARY_LAVA);
         standon.addAll(Arrays.asList(nonSolid));
-        standon.addAll(Arrays.asList(liquids));
+        standon.addAll(liquids);
         
-        startBlock = getNode(s.getBlock());
-        endBlock = getNode(e.getBlock());
-        look(startBlock, max);
+        startNode = getNode(s.getBlock());
+        endNode = getNode(e.getBlock());
+        look(startNode, max);
     }
     
     public Block getNextBlock() {
@@ -78,7 +85,7 @@ public class NPCPath {
     private void look(Node c, int max) {
         Node adjacentBlock;
         int rep = 0;
-        while (c != endBlock && rep < max) { // Repetition variable prevents infinite loop when destination is unreachable
+        while (c != endNode && rep < max) { // Repetition variable prevents infinite loop when destination is unreachable
             rep++;
             closed.add(c);
             open.remove(c);
@@ -99,9 +106,9 @@ public class NPCPath {
                 break;
             }
             c = n[0];
-            if (c == endBlock) {
+            if (c == endNode) {
                 adjacentBlock = c;
-                while (adjacentBlock != null && adjacentBlock != startBlock) {
+                while (adjacentBlock != null && adjacentBlock != startNode) {
                     path.add(adjacentBlock);
                     adjacentBlock = adjacentBlock.parent;
                 }
@@ -109,7 +116,7 @@ public class NPCPath {
             }
         }
         if (path.size() == 0) {
-            path.add(endBlock);
+            path.add(endNode);
         }
     }
     
@@ -132,19 +139,22 @@ public class NPCPath {
         boolean xYDiagonal = (node.xPos != parent.xPos && node.yPos != parent.yPos);
         boolean yZDiagonal = (node.yPos != parent.yPos && node.zPos != parent.zPos);
         
-        if ((standon.contains(node.b.getType()) && (!standon.contains(node.b.getRelative(0, -1, 0).getType()) || (Arrays.asList(liquids).contains(node.b.getRelative(0, -1, 0).getType()) && Arrays.asList(liquids).contains(node.b.getType()))) && standon.contains(node.b.getRelative(0, 1, 0).getType())) || node == endBlock) {
+        Node nodeBelow = getNode(node.b.getRelative(0, -1, 0));
+        Node nodeAbove = getNode(node.b.getRelative(0, 1, 0));
+        
+        if ((node.notsolid && (!nodeBelow.notsolid || (nodeBelow.liquid && node.liquid)) && nodeAbove.notsolid) || node == endNode) {
             if (!open.contains(node) && !closed.contains(node)) {
                 node.parent = parent;
                 node.g = parent.g + ((xZDiagonal || xYDiagonal || yZDiagonal) ? 14 : 10);
                 
-                int difX = endBlock.xPos - node.xPos;
-                int difY = endBlock.yPos - node.yPos;
-                int difZ = endBlock.zPos - node.zPos;
+                int difX = endNode.xPos - node.xPos;
+                int difY = endNode.yPos - node.yPos;
+                int difZ = endNode.zPos - node.zPos;
                 
                 if(difX < 0) difX = difX * -1;
                 if(difY < 0) difY = difY * -1;
                 if(difZ < 0) difZ = difZ * -1;
-
+                
                 node.h = (difX + difY + difZ) * 10;
                 node.f = node.g + node.h;
                 
