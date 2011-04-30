@@ -17,7 +17,7 @@ import org.bukkit.block.Block;
 */
 public class NPCPath {
     
-    private class Node { // Holds data about each block we check
+    public class Node { // Holds data about each block we check
         
         int f,g = 0,h;
         int xPos, yPos, zPos;
@@ -30,6 +30,10 @@ public class NPCPath {
             xPos = b.getX();
             yPos = b.getY();
             zPos = b.getZ();
+            update();
+        }
+        
+        public void update() {
             notsolid = standon.contains(b.getType());
             liquid = liquids.contains(b.getType());
         }
@@ -58,6 +62,7 @@ public class NPCPath {
         liquids.add(Material.STATIONARY_WATER);
         liquids.add(Material.LAVA);
         liquids.add(Material.STATIONARY_LAVA);
+        liquids.add(Material.LADDER); // Trust me it makes sense
         standon.addAll(Arrays.asList(nonSolid));
         standon.addAll(liquids);
         
@@ -66,11 +71,11 @@ public class NPCPath {
         look(startNode, max);
     }
     
-    public Block getNextBlock() {
+    public Node getNextNode() {
         if (path.size() > 0) {
             Node r = path.get(0);
             path.remove(0);
-            return r.b;
+            return r;
         }
         return null;
     }
@@ -134,13 +139,34 @@ public class NPCPath {
         
     }
     
-    private void scoreBlock(Node node, Node parent) {
-        int diagonal = ((node.xPos != parent.xPos && node.zPos != parent.zPos) || (node.xPos != parent.xPos && node.yPos != parent.yPos) || (node.yPos != parent.yPos && node.zPos != parent.zPos))  ? 14 : 10;
+    public boolean checkPath(Node node, Node parent) {
+        return checkPath(node, parent, false);
+    }
+    
+    public boolean checkPath(Node node, Node parent, boolean update) {
+        boolean corner = false;
+        if ((node.xPos != parent.xPos && node.zPos != parent.zPos) || (node.xPos != parent.xPos && node.yPos != parent.yPos) || (node.yPos != parent.yPos && node.zPos != parent.zPos)) {
+            int xDir = (node.xPos - parent.xPos);
+            int zDir = (node.zPos - parent.zPos);
+            
+            boolean xZCor1 = !getNode(parent.b.getRelative(0, 0, zDir)).notsolid;
+            boolean xZCor2 = !getNode(parent.b.getRelative(xDir, 0, 0)).notsolid;
+            
+            corner = (xZCor1 || xZCor2);
+        }
         
         Node nodeBelow = getNode(node.b.getRelative(0, -1, 0));
         Node nodeAbove = getNode(node.b.getRelative(0, 1, 0));
         
-        if ((node.notsolid && (!nodeBelow.notsolid || (nodeBelow.liquid && node.liquid)) && nodeAbove.notsolid) || node == endNode) {
+        if (update) { nodeBelow.update(); nodeAbove.update(); node.update(); }
+        
+        return !corner && ((node.notsolid && (!nodeBelow.notsolid || (nodeBelow.liquid && node.liquid)) && nodeAbove.notsolid) || node == endNode);
+    }
+    
+    private void scoreBlock(Node node, Node parent) {
+        int diagonal = ((node.xPos != parent.xPos && node.zPos != parent.zPos) || (node.xPos != parent.xPos && node.yPos != parent.yPos) || (node.yPos != parent.yPos && node.zPos != parent.zPos))  ? 14 : 10;
+        
+        if (checkPath(node, parent)) {
             if (!open.contains(node) && !closed.contains(node)) {
                 node.parent = parent;
                 node.g = parent.g + diagonal;
