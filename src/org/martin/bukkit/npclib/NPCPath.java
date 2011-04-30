@@ -139,23 +139,34 @@ public class NPCPath {
         
     }
     
-    public boolean checkPath(Node node) {
-        return checkPath(node, false);
+    public boolean checkPath(Node node, Node parent) {
+        return checkPath(node, parent, false);
     }
     
-    public boolean checkPath(Node node, boolean update) {
+    public boolean checkPath(Node node, Node parent, boolean update) {
+        boolean corner = false;
+        if ((node.xPos != parent.xPos && node.zPos != parent.zPos) || (node.xPos != parent.xPos && node.yPos != parent.yPos) || (node.yPos != parent.yPos && node.zPos != parent.zPos)) {
+            int xDir = (node.xPos - parent.xPos);
+            int zDir = (node.zPos - parent.zPos);
+            
+            boolean xZCor1 = !getNode(parent.b.getRelative(0, 0, zDir)).notsolid;
+            boolean xZCor2 = !getNode(parent.b.getRelative(xDir, 0, 0)).notsolid;
+            
+            corner = (xZCor1 || xZCor2);
+        }
+        
         Node nodeBelow = getNode(node.b.getRelative(0, -1, 0));
         Node nodeAbove = getNode(node.b.getRelative(0, 1, 0));
         
         if (update) { nodeBelow.update(); nodeAbove.update(); node.update(); }
         
-        return ((node.notsolid && (!nodeBelow.notsolid || (nodeBelow.liquid && node.liquid)) && nodeAbove.notsolid) || node == endNode);
+        return !corner && ((node.notsolid && (!nodeBelow.notsolid || (nodeBelow.liquid && node.liquid)) && nodeAbove.notsolid) || node == endNode);
     }
     
     private void scoreBlock(Node node, Node parent) {
         int diagonal = ((node.xPos != parent.xPos && node.zPos != parent.zPos) || (node.xPos != parent.xPos && node.yPos != parent.yPos) || (node.yPos != parent.yPos && node.zPos != parent.zPos))  ? 14 : 10;
         
-        if (checkPath(node)) {
+        if (checkPath(node, parent)) {
             if (!open.contains(node) && !closed.contains(node)) {
                 node.parent = parent;
                 node.g = parent.g + diagonal;

@@ -34,7 +34,7 @@ public class NPCEntity extends EntityPlayer {
     private long lastBounceTick;
     private int lastBounceId;
     private NPCPath path;
-    private Block last;
+    private Node last;
     private Timer t = new Timer();
     private Location end;
     private int maxIter;
@@ -56,11 +56,11 @@ public class NPCEntity extends EntityPlayer {
                 float angle = yaw;
                 float look = pitch;
                 if (n != null) {
-                    if (path.checkPath(n, true)) {
+                    if (last == null || path.checkPath(n, last, true)) {
                         b = n.b;
                         if (last != null) {
-                            angle = ((float) Math.toDegrees(Math.atan2(last.getX() - b.getX(), last.getZ() - b.getZ())));
-                            look = (float) (Math.toDegrees(Math.asin(last.getY() - b.getY())) / 2);
+                            angle = ((float) Math.toDegrees(Math.atan2(last.b.getX() - b.getX(), last.b.getZ() - b.getZ())));
+                            look = (float) (Math.toDegrees(Math.asin(last.b.getY() - b.getY())) / 2);
                         }
                         setPositionRotation(b.getX() + 0.5, b.getY(), b.getZ() + 0.5, angle, look);
                         t.schedule(new movePath(), 300);
@@ -70,7 +70,7 @@ public class NPCEntity extends EntityPlayer {
                 } else if (last != null) {
                     setPositionRotation(end.getX(), end.getY(), end.getZ(), end.getYaw(), end.getPitch());
                 }
-                last = b;
+                last = n;
             }
         }
         
