@@ -12,6 +12,7 @@ import net.minecraft.server.Entity;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.WorldServer;
 import org.bukkit.Location;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -141,6 +142,17 @@ public class NPCManager {
         return new ArrayList<NPCEntity>(npcs.values());
     }
 
+    public String getNPCIdFromEntity(org.bukkit.entity.Entity e) {
+        if (e instanceof HumanEntity) {
+            for (String i : npcs.keySet()) {
+                if (npcs.get(i).getBukkitEntity().getEntityId() == ((HumanEntity) e).getEntityId()) {
+                    return i;
+                }
+            }
+        }
+        return null;
+    }
+    
     public void rename(String id, String name) {
         if (name.length() > 16) { // Check and nag if name is too long, spawn NPC anyway with shortened name.
             String tmp = name.substring(0, 16);
