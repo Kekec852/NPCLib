@@ -34,7 +34,7 @@ public class NPCEntity extends EntityPlayer {
     private int lastBounceId;
     private NPCPath path;
     private Block last;
-    private Timer t = new Timer();
+    private Timer timer = new Timer();
     private Location end;
     private int maxIter;
     
@@ -42,7 +42,7 @@ public class NPCEntity extends EntityPlayer {
         path = new NPCPath(getBukkitEntity().getLocation(), l, maxIterations);
         end = l;
         maxIter = maxIterations;
-        t.schedule(new movePath(), 300);
+        timer.schedule(new movePath(), 300);
     }
     
     public class movePath extends TimerTask {
@@ -58,7 +58,7 @@ public class NPCEntity extends EntityPlayer {
                             angle = ((float) Math.toDegrees(Math.atan2(last.getZ() - b.getZ(), last.getX() - b.getX()))) + 90;
                         }
                         setPositionRotation(b.getX() + 0.5, b.getY(), b.getZ() + 0.5, angle, pitch);
-                        t.schedule(new movePath(), 300);
+                        timer.schedule(new movePath(), 300);
                     } else {
                         pathFindTo(end, maxIter);
                     }
