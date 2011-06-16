@@ -91,11 +91,11 @@ public class NPCEntity extends EntityPlayer {
     }
 
     public void animateArmSwing() {
-        this.b.tracker.a(this, new Packet18ArmAnimation(this, 1));
+        ((WorldServer)this.world).tracker.a(this, new Packet18ArmAnimation(this, 1));
     }
 
     public void actAsHurt() {
-        this.b.tracker.a(this, new Packet18ArmAnimation(this, 2));
+        ((WorldServer)this.world).tracker.a(this, new Packet18ArmAnimation(this, 2));
     }
 
     @Override

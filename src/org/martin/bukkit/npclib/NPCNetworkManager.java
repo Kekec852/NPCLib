@@ -38,13 +38,4 @@ public class NPCNetworkManager extends NetworkManager {
     @Override
     public void a() {
     }
-
-    @Override
-    public void c() {
-    }
-
-    @Override
-    public int d() {
-        return 0;
-    }
 }

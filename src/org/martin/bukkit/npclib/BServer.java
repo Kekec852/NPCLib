@@ -94,10 +94,6 @@ public class BServer {
         return mcServer.spawnProtection;
     }
 
-    public EntityTracker getEntityTracker() {
-        return mcServer.tracker;
-    }
-
     public PropertyManager getPropertyManager() {
         return mcServer.propertyManager;
     }
