@@ -123,6 +123,20 @@ public class NPCManager {
         }
     }
 
+    public void putNPCinbed(String id, Location bed) {
+        NPCEntity npc = npcs.get(id);
+        if (npc != null) {
+            npc.a((int) bed.getX(), (int) bed.getY(), (int) bed.getZ());
+        }
+    }
+    
+    public void getNPCoutofbed(String id) {
+        NPCEntity npc = npcs.get(id);
+        if (npc != null) {
+            npc.a(true, true, true);
+        }
+    }
+
     public NPCEntity getNPC(String id) {
         return npcs.get(id);
     }
