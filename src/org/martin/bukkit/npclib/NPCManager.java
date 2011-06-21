@@ -26,6 +26,21 @@ public class NPCManager {
 
     public NPCManager(JavaPlugin plugin) {
         server = BServer.getInstance(plugin);
+        plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
+            public void run() {
+            	HashSet<String> toRemove = new HashSet<String>();
+                for (String i : npcs.keySet()) {
+                	Entity j = npcs.get(i);
+                	j.Q();
+                	if (j.dead) {
+                		toRemove.add(i);
+                	}
+                }
+                for (String n : toRemove) {
+                    npcs.remove(n);
+                }
+            }
+        }, 1L, 1L);
     }
 
     public NPCEntity spawnNPC(String name, Location l) {
