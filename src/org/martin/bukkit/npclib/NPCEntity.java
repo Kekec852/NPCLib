@@ -136,9 +136,9 @@ public class NPCEntity extends EntityPlayer {
     }
 
     @Override
-    public void a(Entity entity) {
+    public void die(Entity entity) {
         System.out.println(entity);
-        super.a(entity);
+        super.die(entity);
     }
 
     @Override
