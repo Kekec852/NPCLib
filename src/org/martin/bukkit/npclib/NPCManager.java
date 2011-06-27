@@ -26,6 +26,21 @@ public class NPCManager {
 
     public NPCManager(JavaPlugin plugin) {
         server = BServer.getInstance(plugin);
+        plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
+            public void run() {
+            	HashSet<String> toRemove = new HashSet<String>();
+                for (String i : npcs.keySet()) {
+                	Entity j = npcs.get(i);
+                	j.Q();
+                	if (j.dead) {
+                		toRemove.add(i);
+                	}
+                }
+                for (String n : toRemove) {
+                    npcs.remove(n);
+                }
+            }
+        }, 1L, 1L);
     }
 
     public NPCEntity spawnNPC(String name, Location l) {
@@ -120,6 +135,21 @@ public class NPCManager {
         NPCEntity npc = npcs.get(id);
         if (npc != null) {
             npc.setPosition(l.getX(), l.getY(), l.getZ());
+        }
+    }
+
+    public void putNPCinbed(String id, Location bed) {
+        NPCEntity npc = npcs.get(id);
+        if (npc != null) {
+            npc.setPosition(bed.getX(), bed.getY(), bed.getZ());
+            npc.a((int) bed.getX(), (int) bed.getY(), (int) bed.getZ());
+        }
+    }
+    
+    public void getNPCoutofbed(String id) {
+        NPCEntity npc = npcs.get(id);
+        if (npc != null) {
+            npc.a(true, true, true);
         }
     }
 
