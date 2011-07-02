@@ -28,13 +28,13 @@ public class NPCManager {
         server = BServer.getInstance(plugin);
         plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
             public void run() {
-            	HashSet<String> toRemove = new HashSet<String>();
+                HashSet<String> toRemove = new HashSet<String>();
                 for (String i : npcs.keySet()) {
-                	Entity j = npcs.get(i);
-                	j.R();
-                	if (j.dead) {
-                		toRemove.add(i);
-                	}
+                    Entity j = npcs.get(i);
+                    j.R();
+                    if (j.dead) {
+                        toRemove.add(i);
+                    }
                 }
                 for (String n : toRemove) {
                     npcs.remove(n);
@@ -155,6 +155,10 @@ public class NPCManager {
 
     public NPCEntity getNPC(String id) {
         return npcs.get(id);
+    }
+
+    public boolean isNPC(org.bukkit.entity.Entity e) {
+        return (((CraftEntity) e).getHandle() instanceof NPCEntity);
     }
 
     public List<NPCEntity> getNPCsByName(String name) {
