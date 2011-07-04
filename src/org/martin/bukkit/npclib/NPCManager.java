@@ -153,6 +153,13 @@ public class NPCManager {
         }
     }
 
+    public void setSneaking(String id, boolean flag) {
+        NPCEntity npc = npcs.get(id);
+        if (npc != null) {
+            npc.setSneak(flag);
+        }
+    }
+
     public NPCEntity getNPC(String id) {
         return npcs.get(id);
     }
