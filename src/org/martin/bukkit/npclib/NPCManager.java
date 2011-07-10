@@ -12,6 +12,7 @@ import net.minecraft.server.Entity;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.WorldServer;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.plugin.java.JavaPlugin;
 
