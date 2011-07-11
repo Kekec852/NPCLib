@@ -93,7 +93,6 @@ public class NPCManager {
         HashSet<String> toRemove = new HashSet<String>();
         for (String n : npcs.keySet()) {
             NPCEntity npc = npcs.get(n);
-            System.out.println(npc.name);
             if (npc != null && npc.name.equals(npcName)) {
                 toRemove.add(n);
                 try {
@@ -106,6 +105,19 @@ public class NPCManager {
         for (String n : toRemove) {
             npcs.remove(n);
         }
+    }
+    
+    public void despawnAll() {
+        for (NPCEntity npc : npcs.values()) {
+            if (npc != null) {
+                try {
+                    npc.world.removeEntity(npc);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        npcs.clear();
     }
     
     public void pathFindNPC(String id, Location l) {
