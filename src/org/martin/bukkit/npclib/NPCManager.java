@@ -24,10 +24,13 @@ public class NPCManager {
 
     private HashMap<String, NPCEntity> npcs = new HashMap<String, NPCEntity>();
     private BServer server;
+    private int taskid;
+    private JavaPlugin plugin;
 
     public NPCManager(JavaPlugin plugin) {
         server = BServer.getInstance(plugin);
-        plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
+        this.plugin = plugin;
+        taskid = plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
             public void run() {
                 HashSet<String> toRemove = new HashSet<String>();
                 for (String i : npcs.keySet()) {
@@ -42,6 +45,11 @@ public class NPCManager {
                 }
             }
         }, 1L, 1L);
+    }
+    
+    public void onDisable() {
+        despawnAll();
+        plugin.getServer().getScheduler().cancelTask(taskid);
     }
 
     public NPCEntity spawnNPC(String name, Location l) {
