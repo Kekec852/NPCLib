@@ -45,11 +45,17 @@ public class NPCManager {
                 }
             }
         }, 1L, 1L);
+        plugin.getServer().getPluginManager().registerEvent(Event.Type.PLUGIN_DISABLE, new SL(), Priority.Normal, plugin);
     }
     
-    public void onDisable() {
-        despawnAll();
-        plugin.getServer().getScheduler().cancelTask(taskid);
+    private class SL extends ServerListener {
+        @Override
+        public void onPluginDisable(PluginDisableEvent event) {
+            if (event.getPlugin() == plugin) {
+                despawnAll();
+                plugin.getServer().getScheduler().cancelTask(taskid);
+            }
+        }
     }
 
     public NPCEntity spawnNPC(String name, Location l) {
