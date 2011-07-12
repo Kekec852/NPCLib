@@ -5,7 +5,6 @@ import java.util.TimerTask;
 
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
-import net.minecraft.server.EntityLiving;
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.MinecraftServer;
@@ -133,28 +132,6 @@ public class NPCEntity extends EntityPlayer {
         lastBounceId = entity.id;
 
         super.c(entity);
-    }
-
-    @Override
-    public void die(Entity entity) {
-        System.out.println(entity);
-        super.die(entity);
-    }
-
-    @Override
-    public void a(EntityLiving entityliving) {
-        System.out.println(entityliving);
-        super.a(entityliving);
-    }
-
-    @Override
-    public void setPositionRotation(double x, double y, double z, float yaw, float pitch) {
-        super.setPositionRotation(x, y, z, yaw, pitch);
-    }
-
-    @Override
-    public void move(double x, double y, double z) {
-        super.move(x, y, z);
     }
 
     public void setItemInHand(Material m) {
