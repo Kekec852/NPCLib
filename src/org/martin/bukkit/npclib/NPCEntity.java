@@ -20,6 +20,7 @@ import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.entity.HumanEntity;
 import org.martin.bukkit.npclib.NPCPath.Node;
 
@@ -134,7 +135,7 @@ public class NPCEntity extends EntityPlayer {
         super.c(entity);
     }
 
-    public Inventory getInventory() {
+    public PlayerInventory getInventory() {
     	return ((HumanEntity) getBukkitEntity()).getInventory();
     }
 
