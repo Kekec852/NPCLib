@@ -14,6 +14,12 @@ import net.minecraft.server.WorldServer;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.event.Event;
+import org.bukkit.event.Event.Priority;
+import org.bukkit.event.server.PluginDisableEvent;
+import org.bukkit.event.server.ServerListener;
+import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.event.world.WorldListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -46,6 +52,7 @@ public class NPCManager {
             }
         }, 1L, 1L);
         plugin.getServer().getPluginManager().registerEvent(Event.Type.PLUGIN_DISABLE, new SL(), Priority.Normal, plugin);
+        plugin.getServer().getPluginManager().registerEvent(Event.Type.CHUNK_LOAD, new WL(), Priority.Normal, plugin);
     }
     
     private class SL extends ServerListener {
@@ -54,6 +61,18 @@ public class NPCManager {
             if (event.getPlugin() == plugin) {
                 despawnAll();
                 plugin.getServer().getScheduler().cancelTask(taskid);
+            }
+        }
+    }
+    
+    private class WL extends WorldListener {
+        @Override
+        public void onChunkLoad(ChunkLoadEvent event) {
+            for (NPCEntity npc : npcs.values()) {
+                if (npc != null && event.getChunk() == npc.getBukkitEntity().getLocation().getBlock().getChunk()) {
+                    BWorld world = new BWorld(event.getWorld());
+                    world.getWorldServer().addEntity(npc);
+                }
             }
         }
     }
