@@ -134,6 +134,10 @@ public class NPCEntity extends EntityPlayer {
         super.c(entity);
     }
 
+    public Inventory getInventory() {
+    	return ((HumanEntity) getBukkitEntity()).getInventory();
+    }
+
     public void setItemInHand(Material m) {
         ((HumanEntity) getBukkitEntity()).setItemInHand(new ItemStack(m, 1));
     }
