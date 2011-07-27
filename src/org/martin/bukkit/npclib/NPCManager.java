@@ -12,7 +12,14 @@ import net.minecraft.server.Entity;
 import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.WorldServer;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.event.Event;
+import org.bukkit.event.Event.Priority;
+import org.bukkit.event.server.PluginDisableEvent;
+import org.bukkit.event.server.ServerListener;
+import org.bukkit.event.world.ChunkLoadEvent;
+import org.bukkit.event.world.WorldListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -23,9 +30,51 @@ public class NPCManager {
 
     private HashMap<String, NPCEntity> npcs = new HashMap<String, NPCEntity>();
     private BServer server;
+    private int taskid;
+    private JavaPlugin plugin;
 
     public NPCManager(JavaPlugin plugin) {
         server = BServer.getInstance(plugin);
+        this.plugin = plugin;
+        taskid = plugin.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
+            public void run() {
+                HashSet<String> toRemove = new HashSet<String>();
+                for (String i : npcs.keySet()) {
+                    Entity j = npcs.get(i);
+                    j.R();
+                    if (j.dead) {
+                        toRemove.add(i);
+                    }
+                }
+                for (String n : toRemove) {
+                    npcs.remove(n);
+                }
+            }
+        }, 1L, 1L);
+        plugin.getServer().getPluginManager().registerEvent(Event.Type.PLUGIN_DISABLE, new SL(), Priority.Normal, plugin);
+        plugin.getServer().getPluginManager().registerEvent(Event.Type.CHUNK_LOAD, new WL(), Priority.Normal, plugin);
+    }
+    
+    private class SL extends ServerListener {
+        @Override
+        public void onPluginDisable(PluginDisableEvent event) {
+            if (event.getPlugin() == plugin) {
+                despawnAll();
+                plugin.getServer().getScheduler().cancelTask(taskid);
+            }
+        }
+    }
+    
+    private class WL extends WorldListener {
+        @Override
+        public void onChunkLoad(ChunkLoadEvent event) {
+            for (NPCEntity npc : npcs.values()) {
+                if (npc != null && event.getChunk() == npc.getBukkitEntity().getLocation().getBlock().getChunk()) {
+                    BWorld world = new BWorld(event.getWorld());
+                    world.getWorldServer().addEntity(npc);
+                }
+            }
+        }
     }
 
     public NPCEntity spawnNPC(String name, Location l) {
@@ -51,7 +100,7 @@ public class NPCManager {
             }
             BWorld world = new BWorld(l.getWorld());
             NPCEntity npcEntity = new NPCEntity(server.getMCServer(), world.getWorldServer(), name, new ItemInWorldManager(world.getWorldServer()));
-            npcEntity.setPositionRotation(l.getBlockX(), l.getBlockY(), l.getBlockZ(), l.getYaw(), l.getPitch());
+            npcEntity.setPositionRotation(l.getX(), l.getY(), l.getZ(), l.getYaw(), l.getPitch());
             world.getWorldServer().addEntity(npcEntity); //the right way
             npcs.put(id, npcEntity);
             return npcEntity;
@@ -77,7 +126,6 @@ public class NPCManager {
         HashSet<String> toRemove = new HashSet<String>();
         for (String n : npcs.keySet()) {
             NPCEntity npc = npcs.get(n);
-            System.out.println(npc.name);
             if (npc != null && npc.name.equals(npcName)) {
                 toRemove.add(n);
                 try {
@@ -90,6 +138,19 @@ public class NPCManager {
         for (String n : toRemove) {
             npcs.remove(n);
         }
+    }
+    
+    public void despawnAll() {
+        for (NPCEntity npc : npcs.values()) {
+            if (npc != null) {
+                try {
+                    npc.world.removeEntity(npc);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        npcs.clear();
     }
     
     public void pathFindNPC(String id, Location l) {
@@ -138,8 +199,19 @@ public class NPCManager {
         }
     }
 
+    public void setSneaking(String id, boolean flag) {
+        NPCEntity npc = npcs.get(id);
+        if (npc != null) {
+            npc.setSneak(flag);
+        }
+    }
+
     public NPCEntity getNPC(String id) {
         return npcs.get(id);
+    }
+
+    public boolean isNPC(org.bukkit.entity.Entity e) {
+        return (((CraftEntity) e).getHandle() instanceof NPCEntity);
     }
 
     public List<NPCEntity> getNPCsByName(String name) {
