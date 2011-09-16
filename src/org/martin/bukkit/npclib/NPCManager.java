@@ -41,7 +41,7 @@ public class NPCManager {
                 HashSet<String> toRemove = new HashSet<String>();
                 for (String i : npcs.keySet()) {
                     Entity j = npcs.get(i);
-                    j.R();
+                    j.aa();//j.R(); was renamed
                     if (j.dead) {
                         toRemove.add(i);
                     }
