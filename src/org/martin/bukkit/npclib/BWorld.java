@@ -84,10 +84,6 @@ public class BWorld {
         return wServer.a(null, l.getX(), l.getY(), l.getZ(), power).wasCanceled ? false : true;
     }
 
-    public void setLightLevel(Block block, final int level) {
-        wServer.b(EnumSkyBlock.BLOCK, block.getX(), block.getY(), block.getZ(), level);
-    }
-
     @SuppressWarnings("unchecked")
     public void removeEntity(String name, final Player player, JavaPlugin plugin) {
         server.getServer().getScheduler().callSyncMethod(plugin, new Callable<Object>() {
