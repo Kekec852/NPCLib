@@ -184,6 +184,21 @@ public class NPCManager {
         }
     }
 
+    public void putNPCinbed(String id, Location bed) {
+        NPCEntity npc = npcs.get(id);
+        if (npc != null) {
+            npc.setPosition(bed.getX(), bed.getY(), bed.getZ());
+            npc.a((int) bed.getX(), (int) bed.getY(), (int) bed.getZ());
+        }
+    }
+    
+    public void getNPCoutofbed(String id) {
+        NPCEntity npc = npcs.get(id);
+        if (npc != null) {
+            npc.a(true, true, true);
+        }
+    }
+
     public void setSneaking(String id, boolean flag) {
         NPCEntity npc = npcs.get(id);
         if (npc != null) {
