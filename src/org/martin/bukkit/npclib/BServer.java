@@ -90,7 +90,7 @@ public class BServer {
     }
 
     public int getSpawnProtationRadius() {
-        return cServer.getSpawnRadius();
+        return mcServer.server.getSpawnRadius();
     }
 
     public PropertyManager getPropertyManager() {
