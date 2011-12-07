@@ -10,10 +10,11 @@ import net.minecraft.server.NetworkListenThread;
 import net.minecraft.server.PropertyManager;
 import net.minecraft.server.ServerConfigurationManager;
 import net.minecraft.server.WorldServer;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.craftbukkit.CraftServer;
-import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * Server hacks for Bukkit
@@ -27,9 +28,9 @@ public class BServer {
     private Server server;
     private HashMap<String, BWorld> worlds = new HashMap<String, BWorld>();
 
-    private BServer(JavaPlugin plugin) {
-        //Getting neede structures
-        server = plugin.getServer();
+    private BServer() {
+        //Getting needed structures
+        server = Bukkit.getServer();
         try {
             cServer = (CraftServer) server;
             mcServer = cServer.getServer();
@@ -40,7 +41,7 @@ public class BServer {
     }
 
     private BServer(Server server) {
-        //Getting neede structures
+        //Getting needed structures
         this.server = server;
         try {
             cServer = (CraftServer) server;
@@ -114,9 +115,9 @@ public class BServer {
         return w;
     }
 
-    public static BServer getInstance(JavaPlugin pl) {
+    public static BServer getInstance() {
         if (ins == null) {
-            ins = new BServer(pl);
+            ins = new BServer();
         }
         return ins;
     }
