@@ -19,6 +19,8 @@ import net.minecraft.server.Packet255KickDisconnect;
 import net.minecraft.server.Packet3Chat;
 import net.minecraft.server.Packet7UseEntity;
 import net.minecraft.server.Packet9Respawn;
+import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 
 /**
@@ -33,7 +35,7 @@ public class NPCNetHandler extends NetServerHandler {
 
     @Override
     public CraftPlayer getPlayer() {
-        return null;
+        return new CraftPlayer((CraftServer) Bukkit.getServer(), player); //Fake player prevents spout NPEs
     }
 
     @Override
