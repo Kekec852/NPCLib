@@ -144,7 +144,11 @@ public class NPCEntity extends EntityPlayer {
     }
 
     public void setItemInHand(Material m) {
-        ((HumanEntity) getBukkitEntity()).setItemInHand(new ItemStack(m, 1));
+        setItemInHand(m, (short) 0);
+    }
+    
+    public void setItemInHand(Material m, short damage) {
+        ((HumanEntity) getBukkitEntity()).setItemInHand(new ItemStack(m, 1, damage));
     }
     
     @Override
