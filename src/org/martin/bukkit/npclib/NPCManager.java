@@ -40,7 +40,7 @@ public class NPCManager {
     private JavaPlugin plugin;
 
     public NPCManager(JavaPlugin plugin) {
-        server = BServer.getInstance(plugin);
+        server = BServer.getInstance();
         this.plugin = plugin;
         taskid = Bukkit.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
             public void run() {
