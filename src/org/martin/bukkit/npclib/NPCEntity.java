@@ -41,7 +41,7 @@ public class NPCEntity extends EntityPlayer {
 
     public NPCEntity(MinecraftServer minecraftserver, World world, String s, ItemInWorldManager iteminworldmanager) {
         super(minecraftserver, world, s, iteminworldmanager);
-        iteminworldmanager.b(1);
+        iteminworldmanager.b(0);
         NetworkManager netMgr = new NPCNetworkManager(new NullSocket(), "NPC Manager", new NetHandler() {
             @Override
             public boolean c() {
