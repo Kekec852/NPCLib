@@ -114,26 +114,26 @@ public class NPCManager {
     }
     
     public SpoutPlayer getSpoutPlayer(String id) {
-    	NPCEntity npc = npcs.get(id);
+        NPCEntity npc = npcs.get(id);
         if (npc != null) {
-        	return getSpoutPlayer(npc);
+            return getSpoutPlayer(npc);
         }
         return null;
     }
     
     public SpoutPlayer getSpoutPlayer(NPCEntity npc) {
-    	try {
-    		Class.forName("org.getspout.spout.Spout");
-    		
-    		if (!(npc.getBukkitEntity() instanceof SpoutCraftPlayer)) {
-    			npc.setBukkitEntity(new SpoutCraftPlayer((CraftServer)Bukkit.getServer(), (EntityPlayer) npc));
-    		}
-    		
-    		return (SpoutPlayer) npc.getBukkitEntity();
-    	} catch (ClassNotFoundException e) { 
-    		Bukkit.getServer().getLogger().warning("Cannot get spout player without spout installed");
-    	}
-    	return null;
+        try {
+            Class.forName("org.getspout.spout.Spout");
+            
+            if (!(npc.getBukkitEntity() instanceof SpoutCraftPlayer)) {
+                npc.setBukkitEntity(new SpoutCraftPlayer((CraftServer)Bukkit.getServer(), (EntityPlayer) npc));
+            }
+            
+            return (SpoutPlayer) npc.getBukkitEntity();
+        } catch (ClassNotFoundException e) { 
+            Bukkit.getServer().getLogger().warning("Cannot get spout player without spout installed");
+        }
+        return null;
     }
 
     public void despawnById(String id) {

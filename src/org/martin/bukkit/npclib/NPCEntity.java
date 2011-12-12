@@ -55,7 +55,7 @@ public class NPCEntity extends EntityPlayer {
     }
     
     public void setBukkitEntity(org.bukkit.entity.Entity entity) {
-    	this.bukkitEntity = entity;
+        this.bukkitEntity = entity;
     }
     
     public void pathFindTo(Location l, int maxIterations) {
@@ -140,7 +140,7 @@ public class NPCEntity extends EntityPlayer {
     }
 
     public PlayerInventory getInventory() {
-    	return ((HumanEntity) getBukkitEntity()).getInventory();
+        return ((HumanEntity) getBukkitEntity()).getInventory();
     }
 
     public void setItemInHand(Material m) {
@@ -153,7 +153,7 @@ public class NPCEntity extends EntityPlayer {
     
     @Override
     public void move(double arg0, double arg1, double arg2) {
-    	setPosition(arg0, arg1, arg2);
+        setPosition(arg0, arg1, arg2);
     }
 
     public void setName(String name) {
