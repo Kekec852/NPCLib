@@ -14,6 +14,7 @@ import net.minecraft.server.Packet18ArmAnimation;
 import net.minecraft.server.World;
 import net.minecraft.server.WorldServer;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -23,6 +24,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
+import org.getspout.spout.player.SpoutCraftPlayer;
+import org.getspout.spoutapi.player.SpoutPlayer;
 import org.martin.bukkit.npclib.NPCPath.Node;
 
 /**
@@ -113,6 +116,23 @@ public class NPCEntity extends EntityPlayer {
         yaw = (float) (newYaw - 90);
         pitch = (float) newPitch;
     }
+
+    public SpoutPlayer getSpoutPlayer() {
+        try {
+            Class.forName("org.getspout.spout.Spout");
+            
+            if (!(getBukkitEntity() instanceof SpoutCraftPlayer)) {
+                setBukkitEntity(new SpoutCraftPlayer((CraftServer)Bukkit.getServer(), (EntityPlayer) this));
+            }
+            
+            return (SpoutPlayer) getBukkitEntity();
+        } catch (ClassNotFoundException e) { 
+            Bukkit.getServer().getLogger().warning("Cannot get spout player without spout installed");
+        }
+        return null;
+    }
+
+    
 
     public void animateArmSwing() {
         ((WorldServer)this.world).tracker.a(this, new Packet18ArmAnimation(this, 1));

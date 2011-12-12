@@ -15,8 +15,6 @@ import net.minecraft.server.WorldServer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.entity.CraftEntity;
-import org.bukkit.craftbukkit.CraftServer;
-import net.minecraft.server.EntityPlayer;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.Event;
 import org.bukkit.event.Event.Priority;
@@ -25,8 +23,6 @@ import org.bukkit.event.server.ServerListener;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.WorldListener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.getspout.spout.player.SpoutCraftPlayer;
-import org.getspout.spoutapi.player.SpoutPlayer;
 
 /**
  *
@@ -111,29 +107,6 @@ public class NPCManager {
             npcs.put(id, npcEntity);
             return npcEntity;
         }
-    }
-    
-    public SpoutPlayer getSpoutPlayer(String id) {
-        NPCEntity npc = npcs.get(id);
-        if (npc != null) {
-            return getSpoutPlayer(npc);
-        }
-        return null;
-    }
-    
-    public SpoutPlayer getSpoutPlayer(NPCEntity npc) {
-        try {
-            Class.forName("org.getspout.spout.Spout");
-            
-            if (!(npc.getBukkitEntity() instanceof SpoutCraftPlayer)) {
-                npc.setBukkitEntity(new SpoutCraftPlayer((CraftServer)Bukkit.getServer(), (EntityPlayer) npc));
-            }
-            
-            return (SpoutPlayer) npc.getBukkitEntity();
-        } catch (ClassNotFoundException e) { 
-            Bukkit.getServer().getLogger().warning("Cannot get spout player without spout installed");
-        }
-        return null;
     }
 
     public void despawnById(String id) {
