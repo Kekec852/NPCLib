@@ -22,6 +22,7 @@ import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.LivingEntity;
 import org.martin.bukkit.npclib.NPCPath.Node;
 
 /**
@@ -92,6 +93,25 @@ public class NPCEntity extends EntityPlayer {
                 last = n;
             }
         }
+    }
+
+    public void lookAtPoint(Location point) {
+        if (getBukkitEntity().getWorld() != point.getWorld()) {
+            return;
+        }
+        Location npcLoc = ((LivingEntity) getBukkitEntity()).getEyeLocation();
+        double xDiff = point.getX() - npcLoc.getX();
+        double yDiff = point.getY() - npcLoc.getY();
+        double zDiff = point.getZ() - npcLoc.getZ();
+        double DistanceXZ = Math.sqrt(xDiff * xDiff + zDiff * zDiff);
+        double DistanceY = Math.sqrt(DistanceXZ * DistanceXZ + yDiff * yDiff);
+        double newYaw = (Math.acos(xDiff / DistanceXZ) * 180 / Math.PI);
+        double newPitch = (Math.acos(yDiff / DistanceY) * 180 / Math.PI) - 90;
+        if (zDiff < 0.0) {
+            newYaw = newYaw + (Math.abs(180 - newYaw) * 2);
+        }
+        yaw = (float) (newYaw - 90);
+        pitch = (float) newPitch;
     }
 
     public void animateArmSwing() {
