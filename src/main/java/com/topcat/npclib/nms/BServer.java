@@ -22,114 +22,114 @@ import org.bukkit.craftbukkit.CraftServer;
  */
 public class BServer {
 
-    private static BServer ins;
-    private MinecraftServer mcServer;
-    private CraftServer cServer;
-    private Server server;
-    private HashMap<String, BWorld> worlds = new HashMap<String, BWorld>();
+	private static BServer ins;
+	private MinecraftServer mcServer;
+	private CraftServer cServer;
+	private Server server;
+	private HashMap<String, BWorld> worlds = new HashMap<String, BWorld>();
 
-    private BServer() {
-        //Getting needed structures
-        server = Bukkit.getServer();
-        try {
-            cServer = (CraftServer) server;
-            mcServer = cServer.getServer();
-        } catch (Exception ex) {
-            Logger.getLogger("Minecraft").log(Level.SEVERE, null, ex);
-        }
-        //end
-    }
+	private BServer() {
+		//Getting needed structures
+		server = Bukkit.getServer();
+		try {
+			cServer = (CraftServer) server;
+			mcServer = cServer.getServer();
+		} catch (Exception ex) {
+			Logger.getLogger("Minecraft").log(Level.SEVERE, null, ex);
+		}
+		//end
+	}
 
-    private BServer(Server server) {
-        //Getting needed structures
-        this.server = server;
-        try {
-            cServer = (CraftServer) server;
-            mcServer = cServer.getServer();
-        } catch (Exception ex) {
-            Logger.getLogger("Minecraft").log(Level.SEVERE, null, ex);
-        }
-        //end
-    }
+	private BServer(Server server) {
+		//Getting needed structures
+		this.server = server;
+		try {
+			cServer = (CraftServer) server;
+			mcServer = cServer.getServer();
+		} catch (Exception ex) {
+			Logger.getLogger("Minecraft").log(Level.SEVERE, null, ex);
+		}
+		//end
+	}
 
-    public void disablePlugins() {
-        cServer.disablePlugins();
-    }
+	public void disablePlugins() {
+		cServer.disablePlugins();
+	}
 
-    public void dispatchCommand(CommandSender sender, String msg) {
-        cServer.dispatchCommand(sender, msg);
-    }
+	public void dispatchCommand(CommandSender sender, String msg) {
+		cServer.dispatchCommand(sender, msg);
+	}
 
-    public ServerConfigurationManager getHandle() {
-        return cServer.getHandle();
-    }
+	public ServerConfigurationManager getHandle() {
+		return cServer.getHandle();
+	}
 
-    public ConsoleReader getReader() {
-        return cServer.getReader();
-    }
+	public ConsoleReader getReader() {
+		return cServer.getReader();
+	}
 
-    public void loadPlugins() {
-        cServer.loadPlugins();
-    }
+	public void loadPlugins() {
+		cServer.loadPlugins();
+	}
 
-    public void stop() {
-        mcServer.safeShutdown();
-    }
+	public void stop() {
+		mcServer.safeShutdown();
+	}
 
-    public void sendConsoleCommand(String cmd) {
-        if (!mcServer.isStopped && MinecraftServer.isRunning(mcServer)) {
-            mcServer.issueCommand(cmd, mcServer);
-        }
-    }
+	public void sendConsoleCommand(String cmd) {
+		if (!mcServer.isStopped && MinecraftServer.isRunning(mcServer)) {
+			mcServer.issueCommand(cmd, mcServer);
+		}
+	}
 
-    public Logger getLogger() {
-        return cServer.getLogger();
-    }
+	public Logger getLogger() {
+		return cServer.getLogger();
+	}
 
-    public List<WorldServer> getWorldServers() {
-        return mcServer.worlds;
-    }
+	public List<WorldServer> getWorldServers() {
+		return mcServer.worlds;
+	}
 
-    public int getSpawnProtationRadius() {
-        return mcServer.server.getSpawnRadius();
-    }
+	public int getSpawnProtationRadius() {
+		return mcServer.server.getSpawnRadius();
+	}
 
-    public PropertyManager getPropertyManager() {
-        return mcServer.propertyManager;
-    }
+	public PropertyManager getPropertyManager() {
+		return mcServer.propertyManager;
+	}
 
-    public NetworkListenThread getNetworkThread() {
-        return mcServer.networkListenThread;
-    }
+	public NetworkListenThread getNetworkThread() {
+		return mcServer.networkListenThread;
+	}
 
-    public Server getServer() {
-        return server;
-    }
+	public Server getServer() {
+		return server;
+	}
 
-    public BWorld getWorld(String worldName) {
-        if (worlds.containsKey(worldName)) {
-            return worlds.get(worldName);
-        }
-        BWorld w = new BWorld(this, worldName);
-        worlds.put(worldName, w);
-        return w;
-    }
+	public BWorld getWorld(String worldName) {
+		if (worlds.containsKey(worldName)) {
+			return worlds.get(worldName);
+		}
+		BWorld w = new BWorld(this, worldName);
+		worlds.put(worldName, w);
+		return w;
+	}
 
-    public static BServer getInstance() {
-        if (ins == null) {
-            ins = new BServer();
-        }
-        return ins;
-    }
+	public static BServer getInstance() {
+		if (ins == null) {
+			ins = new BServer();
+		}
+		return ins;
+	}
 
-    public static BServer getInstance(Server pl) {
-        if (ins == null) {
-            ins = new BServer(pl);
-        }
-        return ins;
-    }
+	public static BServer getInstance(Server pl) {
+		if (ins == null) {
+			ins = new BServer(pl);
+		}
+		return ins;
+	}
 
-    public MinecraftServer getMCServer() {
-        return mcServer;
-    }
+	public MinecraftServer getMCServer() {
+		return mcServer;
+	}
 }

@@ -36,8 +36,8 @@ public class NPC {
 		try {
 			entity.world.removeEntity(entity);
 		} catch (Exception e) {
-            e.printStackTrace();
-        }
+			e.printStackTrace();
+		}
 	}
 	
 	public org.bukkit.entity.Entity getBukkitEntity() {

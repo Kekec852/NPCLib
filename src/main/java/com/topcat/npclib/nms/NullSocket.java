@@ -12,14 +12,14 @@ import java.net.Socket;
  */
 public class NullSocket extends Socket {
 
-    @Override
-    public InputStream getInputStream() {
-        byte[] buf = new byte[1];
-        return new ByteArrayInputStream(buf);
-    }
+	@Override
+	public InputStream getInputStream() {
+		byte[] buf = new byte[1];
+		return new ByteArrayInputStream(buf);
+	}
 
-    @Override
-    public OutputStream getOutputStream() {
-        return new ByteArrayOutputStream();
-    }
+	@Override
+	public OutputStream getOutputStream() {
+		return new ByteArrayOutputStream();
+	}
 }
