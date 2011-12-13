@@ -24,6 +24,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.util.Vector;
 import org.getspout.spout.player.SpoutCraftPlayer;
 import org.getspout.spoutapi.player.SpoutPlayer;
 import com.topcat.npclib.NPCPath.Node;
@@ -33,7 +34,7 @@ import com.topcat.npclib.NPCPath.Node;
  * @author martin
  */
 public class NPCEntity extends EntityPlayer {
-
+    private NPCManager npcManager;
     private int lastTargetId;
     private long lastBounceTick;
     private int lastBounceId;
@@ -43,10 +44,14 @@ public class NPCEntity extends EntityPlayer {
     private Location end;
     private int maxIter;
 
-    public NPCEntity(MinecraftServer minecraftserver, World world, String s, ItemInWorldManager iteminworldmanager) {
+    public NPCEntity(NPCManager npcManager, MinecraftServer minecraftserver, World world, String s, ItemInWorldManager iteminworldmanager) {
         super(minecraftserver, world, s, iteminworldmanager);
+        this.npcManager = npcManager;
+        npcManager.getServer().getMCServer();
+        
         iteminworldmanager.b(0);
         NetworkManager netMgr = new NPCNetworkManager(new NullSocket(), "NPC Manager", new NetHandler() {
+
             @Override
             public boolean c() {
                 return true;
@@ -57,15 +62,16 @@ public class NPCEntity extends EntityPlayer {
         this.lastBounceId = -1;
         this.lastBounceTick = 0;
     }
-    
+
     public void setBukkitEntity(org.bukkit.entity.Entity entity) {
         this.bukkitEntity = entity;
     }
-    
+
     public void pathFindTo(Location l, int maxIterations) {
         path = new NPCPath(getBukkitEntity().getLocation(), l, maxIterations);
         end = l;
         maxIter = maxIterations;
+        Bukkit.getScheduler().scheduleSyncDelayedTask(null, new movePath(), 300L);
         timer.schedule(new movePath(), 300);
     }
 
@@ -120,26 +126,24 @@ public class NPCEntity extends EntityPlayer {
     public SpoutPlayer getSpoutPlayer() {
         try {
             Class.forName("org.getspout.spout.Spout");
-            
+
             if (!(getBukkitEntity() instanceof SpoutCraftPlayer)) {
-                setBukkitEntity(new SpoutCraftPlayer((CraftServer)Bukkit.getServer(), (EntityPlayer) this));
+                setBukkitEntity(new SpoutCraftPlayer((CraftServer) Bukkit.getServer(), (EntityPlayer) this));
             }
-            
+
             return (SpoutPlayer) getBukkitEntity();
-        } catch (ClassNotFoundException e) { 
+        } catch (ClassNotFoundException e) {
             Bukkit.getServer().getLogger().warning("Cannot get spout player without spout installed");
         }
         return null;
     }
 
-    
-
     public void animateArmSwing() {
-        ((WorldServer)this.world).tracker.a(this, new Packet18ArmAnimation(this, 1));
+        ((WorldServer) this.world).tracker.a(this, new Packet18ArmAnimation(this, 1));
     }
 
     public void actAsHurt() {
-        ((WorldServer)this.world).tracker.a(this, new Packet18ArmAnimation(this, 2));
+        ((WorldServer) this.world).tracker.a(this, new Packet18ArmAnimation(this, 2));
     }
 
     @Override
@@ -186,11 +190,11 @@ public class NPCEntity extends EntityPlayer {
     public void setItemInHand(Material m) {
         setItemInHand(m, (short) 0);
     }
-    
+
     public void setItemInHand(Material m, short damage) {
         ((HumanEntity) getBukkitEntity()).setItemInHand(new ItemStack(m, 1, damage));
     }
-    
+
     @Override
     public void move(double arg0, double arg1, double arg2) {
         setPosition(arg0, arg1, arg2);

@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import net.minecraft.server.Entity;
 
@@ -14,6 +15,7 @@ import net.minecraft.server.WorldServer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.Event;
@@ -34,6 +36,7 @@ public class NPCManager {
     private BServer server;
     private int taskid;
     private JavaPlugin plugin;
+    private Map<World, BWorld> bworlds = new HashMap<World, BWorld>();
 
     public NPCManager(JavaPlugin plugin) {
         server = BServer.getInstance();
@@ -57,6 +60,14 @@ public class NPCManager {
         Bukkit.getServer().getPluginManager().registerEvent(Event.Type.CHUNK_LOAD, new WL(), Priority.Normal, plugin);
     }
     
+    public BWorld getBWorld(World world) {
+        BWorld get = bworlds.get(world);
+        if (get != null) {
+            return get;
+        }
+        return new BWorld(world);
+    }
+    
     private class SL extends ServerListener {
         @Override
         public void onPluginDisable(PluginDisableEvent event) {
@@ -72,7 +83,7 @@ public class NPCManager {
         public void onChunkLoad(ChunkLoadEvent event) {
             for (NPCEntity npc : npcs.values()) {
                 if (npc != null && event.getChunk() == npc.getBukkitEntity().getLocation().getBlock().getChunk()) {
-                    BWorld world = new BWorld(event.getWorld());
+                    BWorld world = getBWorld(event.getWorld());
                     world.getWorldServer().addEntity(npc);
                 }
             }
@@ -100,8 +111,8 @@ public class NPCManager {
                 server.getLogger().log(Level.WARNING, name + " has been shortened to " + tmp);
                 name = tmp;
             }
-            BWorld world = new BWorld(l.getWorld());
-            NPCEntity npcEntity = new NPCEntity(server.getMCServer(), world.getWorldServer(), name, new ItemInWorldManager(world.getWorldServer()));
+            BWorld world = getBWorld(l.getWorld());
+            NPCEntity npcEntity = new NPCEntity(this, server.getMCServer(), world.getWorldServer(), name, new ItemInWorldManager(world.getWorldServer()));
             npcEntity.setPositionRotation(l.getX(), l.getY(), l.getZ(), l.getYaw(), l.getPitch());
             world.getWorldServer().addEntity(npcEntity); //the right way
             npcs.put(id, npcEntity);
@@ -251,7 +262,7 @@ public class NPCManager {
         }
         NPCEntity npc = getNPC(id);
         npc.setName(name);
-        BWorld b = new BWorld(npc.getBukkitEntity().getLocation().getWorld());
+        BWorld b = getBWorld(npc.getBukkitEntity().getLocation().getWorld());
         WorldServer s = b.getWorldServer();
         try {
             Method m = s.getClass().getDeclaredMethod("d", new Class[]{Entity.class});
@@ -264,5 +275,9 @@ public class NPCManager {
             ex.printStackTrace();
         }
         s.everyoneSleeping();
+    }
+
+    BServer getServer() {
+        return server;
     }
 }
