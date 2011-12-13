@@ -71,11 +71,11 @@ public class NPCManager {
 	}
 
 	public BWorld getBWorld(World world) {
-		BWorld get = bworlds.get(world);
-		if (get != null) {
-			return get;
+		BWorld bworld = bworlds.get(world);
+		if (bworld != null) {
+			return bworld;
 		}
-		BWorld bworld = new BWorld(world);
+		bworld = new BWorld(world);
 		bworlds.put(world, bworld);
 		return bworld;
 	}
