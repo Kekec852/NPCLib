@@ -6,12 +6,9 @@ import java.util.TimerTask;
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityPlayer;
-import net.minecraft.server.ItemInWorldManager;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.NetHandler;
 import net.minecraft.server.NetworkManager;
 import net.minecraft.server.Packet18ArmAnimation;
-import net.minecraft.server.World;
 import net.minecraft.server.WorldServer;
 
 import org.bukkit.Bukkit;
@@ -24,16 +21,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.util.Vector;
 import org.getspout.spout.player.SpoutCraftPlayer;
 import org.getspout.spoutapi.player.SpoutPlayer;
 import com.topcat.npclib.NPCPath.Node;
 
 /**
- *
- * @author martin
+ * Represents an NPC Entity.
  */
 public class NPCEntity extends EntityPlayer {
+
     private NPCManager npcManager;
     private int lastTargetId;
     private long lastBounceTick;
@@ -46,17 +42,11 @@ public class NPCEntity extends EntityPlayer {
 
     public NPCEntity(NPCManager npcManager, BWorld world, String s) {
         super(npcManager.getServer().getMCServer(), world.getMCWorld(), s, world.getItemInWorldManager());
-        this.npcManager = npcManager;
         
         world.getItemInWorldManager().b(0);
-        NetworkManager netMgr = new NPCNetworkManager(new NullSocket(), "NPC Manager", new NetHandler() {
-
-            @Override
-            public boolean c() {
-                return true;
-            }
-        });
-        this.netServerHandler = new NPCNetHandler(npcManager.getServer().getMCServer(), netMgr, this);
+        
+        this.npcManager = npcManager;
+        this.netServerHandler = new NPCNetHandler(npcManager, this);
         this.lastTargetId = -1;
         this.lastBounceId = -1;
         this.lastBounceTick = 0;

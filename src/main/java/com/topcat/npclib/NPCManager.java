@@ -37,9 +37,11 @@ public class NPCManager {
     private int taskid;
     private JavaPlugin plugin;
     private Map<World, BWorld> bworlds = new HashMap<World, BWorld>();
+    private NPCNetworkManager npcNetworkManager;
 
     public NPCManager(JavaPlugin plugin) {
         server = BServer.getInstance();
+        npcNetworkManager = new NPCNetworkManager();
         this.plugin = plugin;
         taskid = Bukkit.getServer().getScheduler().scheduleAsyncRepeatingTask(plugin, new Runnable() {
             public void run() {
@@ -279,5 +281,9 @@ public class NPCManager {
 
     BServer getServer() {
         return server;
+    }
+    
+    NPCNetworkManager getNPCNetworkManager() {
+        return npcNetworkManager;
     }
 }
