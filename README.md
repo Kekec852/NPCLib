@@ -1,4 +1,3 @@
 NPCLib
 ======
-
-This is NPCLib that alow you to spawn NPCs in CraftBukkit.
+NPCLib is a library that allows one to spawn NPCs in Craftbukkit.
