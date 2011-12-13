@@ -57,7 +57,7 @@ public class NPCManager {
 				for (String i : npcs.keySet()) {
 					Entity j = npcs.get(i).getEntity();
 					j.af();
-					if (j.dead) {
+					if (j.dead) { 
 						toRemove.add(i);
 					}
 				}
