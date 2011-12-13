@@ -286,4 +286,9 @@ public class NPCManager {
     NPCNetworkManager getNPCNetworkManager() {
         return npcNetworkManager;
     }
+    
+    JavaPlugin getPlugin() {
+        return plugin;
+    }
+            
 }

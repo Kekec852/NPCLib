@@ -60,11 +60,10 @@ public class NPCEntity extends EntityPlayer {
         path = new NPCPath(getBukkitEntity().getLocation(), l, maxIterations);
         end = l;
         maxIter = maxIterations;
-        Bukkit.getScheduler().scheduleSyncDelayedTask(null, new movePath(), 300L);
-        timer.schedule(new movePath(), 300);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(npcManager.getPlugin(), new MoveTask(), 300L);
     }
 
-    public class movePath extends TimerTask {
+    public class MoveTask implements Runnable {
 
         @Override
         public void run() {
@@ -81,7 +80,7 @@ public class NPCEntity extends EntityPlayer {
                             look = (float) (Math.toDegrees(Math.asin(last.b.getY() - b.getY())) / 2);
                         }
                         setPositionRotation(b.getX() + 0.5, b.getY(), b.getZ() + 0.5, angle, look);
-                        timer.schedule(new movePath(), 300);
+                        Bukkit.getScheduler().scheduleSyncDelayedTask(npcManager.getPlugin(), new MoveTask(), 300L);
                     } else {
                         pathFindTo(end, maxIter);
                     }
