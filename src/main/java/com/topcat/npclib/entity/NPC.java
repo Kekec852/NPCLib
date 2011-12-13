@@ -14,7 +14,7 @@ import org.bukkit.block.Block;
 import net.minecraft.server.Entity;
 
 public class NPC {
-
+	
 	private Entity entity;
 	private NPCPathFinder path;
 	private Iterator<Node> pathIterator;
@@ -22,15 +22,15 @@ public class NPC {
 	private NPCPath runningPath;
 	private int taskid;
 	private Runnable onFail;
-
+	
 	public NPC(Entity entity) {
 		this.entity = entity;
 	}
-
+	
 	public Entity getEntity() {
 		return entity;
 	}
-
+	
 	public void removeFromWorld() {
 		try {
 			entity.world.removeEntity(entity);
@@ -38,15 +38,15 @@ public class NPC {
 			e.printStackTrace();
 		}
 	}
-
+	
 	public org.bukkit.entity.Entity getBukkitEntity() {
 		return entity.getBukkitEntity();
 	}
-
+	
 	public void pathFindTo(Location l, PathReturn callback) {
 		pathFindTo(l, 3000, callback);
 	}
-
+	
 	public void pathFindTo(Location l, int maxIterations, PathReturn callback) {
 		if (path != null) {
 			path.cancel = true;
@@ -54,18 +54,17 @@ public class NPC {
 		path = new NPCPathFinder(getEntity().getBukkitEntity().getLocation(), l, maxIterations, callback);
 		path.start();
 	}
-
+	
 	public void walkTo(Location l) {
 		walkTo(l, 3000);
 	}
-
+	
 	public void walkTo(final Location l, final int maxIterations) {
 		pathFindTo(l, maxIterations, new PathReturn() {
-
 			@Override
 			public void run(NPCPath path) {
 				usePath(path, new Runnable() {
-
+					
 					@Override
 					public void run() {
 						walkTo(l, maxIterations);
@@ -74,21 +73,19 @@ public class NPC {
 			}
 		});
 	}
-
+	
 	public void usePath(NPCPath path) {
 		usePath(path, new Runnable() {
-
 			@Override
 			public void run() {
 				walkTo(runningPath.getEnd(), 3000);
 			}
 		});
 	}
-
+	
 	public void usePath(NPCPath path, Runnable onFail) {
 		if (taskid == 0) {
 			taskid = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(NPCManager.plugin, new Runnable() {
-
 				@Override
 				public void run() {
 					pathStep();
@@ -99,7 +96,7 @@ public class NPC {
 		runningPath = path;
 		this.onFail = onFail;
 	}
-
+	
 	private void pathStep() {
 		if (pathIterator.hasNext()) {
 			Node n = pathIterator.next();
@@ -123,4 +120,5 @@ public class NPC {
 			taskid = 0;
 		}
 	}
+	
 }

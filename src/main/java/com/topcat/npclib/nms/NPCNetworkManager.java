@@ -1,7 +1,6 @@
 package com.topcat.npclib.nms;
 
 import java.lang.reflect.Field;
-import java.net.Socket;
 import net.minecraft.server.NetHandler;
 import net.minecraft.server.NetworkManager;
 import net.minecraft.server.Packet;
@@ -11,10 +10,9 @@ import net.minecraft.server.Packet;
  * @author martin
  */
 public class NPCNetworkManager extends NetworkManager {
-
+	
 	public NPCNetworkManager() {
 		super(new NullSocket(), "NPC Manager", new NetHandler() {
-
 			@Override
 			public boolean c() {
 				return true;
@@ -28,20 +26,21 @@ public class NPCNetworkManager extends NetworkManager {
 			e.printStackTrace();
 		}
 	}
-
+	
 	@Override
 	public void a(NetHandler nethandler) {
 	}
-
+	
 	@Override
 	public void queue(Packet packet) {
 	}
-
+	
 	@Override
 	public void a(String s, Object... aobject) {
 	}
-
+	
 	@Override
 	public void a() {
 	}
+	
 }

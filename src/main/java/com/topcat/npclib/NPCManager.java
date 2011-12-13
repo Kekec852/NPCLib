@@ -37,21 +37,20 @@ import org.bukkit.plugin.java.JavaPlugin;
  * @author martin
  */
 public class NPCManager {
-
+	
 	private HashMap<String, NPC> npcs = new HashMap<String, NPC>();
 	private BServer server;
 	private int taskid;
 	private Map<World, BWorld> bworlds = new HashMap<World, BWorld>();
 	private NPCNetworkManager npcNetworkManager;
 	public static JavaPlugin plugin;
-
+	
 	public NPCManager(JavaPlugin plugin) {
 		server = BServer.getInstance();
-
+		
 		npcNetworkManager = new NPCNetworkManager();
 		NPCManager.plugin = plugin;
 		taskid = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
-
 			public void run() {
 				HashSet<String> toRemove = new HashSet<String>();
 				for (String i : npcs.keySet()) {
@@ -69,7 +68,7 @@ public class NPCManager {
 		Bukkit.getServer().getPluginManager().registerEvent(Event.Type.PLUGIN_DISABLE, new SL(), Priority.Normal, plugin);
 		Bukkit.getServer().getPluginManager().registerEvent(Event.Type.CHUNK_LOAD, new WL(), Priority.Normal, plugin);
 	}
-
+	
 	public BWorld getBWorld(World world) {
 		BWorld bworld = bworlds.get(world);
 		if (bworld != null) {
@@ -79,9 +78,8 @@ public class NPCManager {
 		bworlds.put(world, bworld);
 		return bworld;
 	}
-
+	
 	private class SL extends ServerListener {
-
 		@Override
 		public void onPluginDisable(PluginDisableEvent event) {
 			if (event.getPlugin() == plugin) {
@@ -90,9 +88,8 @@ public class NPCManager {
 			}
 		}
 	}
-
+	
 	private class WL extends WorldListener {
-
 		@Override
 		public void onChunkLoad(ChunkLoadEvent event) {
 			for (NPC npc : npcs.values()) {
@@ -103,7 +100,7 @@ public class NPCManager {
 			}
 		}
 	}
-
+	
 	public NPC spawnHumanNPC(String name, Location l) {
 		int i = 0;
 		String id = name;
@@ -113,7 +110,7 @@ public class NPCManager {
 		}
 		return spawnHumanNPC(name, l, id);
 	}
-
+	
 	public NPC spawnHumanNPC(String name, Location l, String id) {
 		if (npcs.containsKey(id)) {
 			server.getLogger().log(Level.WARNING, "NPC with that id already exists, existing NPC returned");
@@ -134,7 +131,7 @@ public class NPCManager {
 			return npc;
 		}
 	}
-
+	
 	public void despawnById(String id) {
 		NPC npc = npcs.get(id);
 		if (npc != null) {
@@ -142,7 +139,7 @@ public class NPCManager {
 			npc.removeFromWorld();
 		}
 	}
-
+	
 	public void despawnHumanByName(String npcName) {
 		if (npcName.length() > 16) {
 			npcName = npcName.substring(0, 16); //Ensure you can still despawn
@@ -161,7 +158,7 @@ public class NPCManager {
 			npcs.remove(n);
 		}
 	}
-
+	
 	public void despawnAll() {
 		for (NPC npc : npcs.values()) {
 			if (npc != null) {
@@ -170,15 +167,15 @@ public class NPCManager {
 		}
 		npcs.clear();
 	}
-
+	
 	public NPC getNPC(String id) {
 		return npcs.get(id);
 	}
-
+	
 	public boolean isNPC(org.bukkit.entity.Entity e) {
 		return (((CraftEntity) e).getHandle() instanceof NPCEntity);
 	}
-
+	
 	public List<NPC> getHumanNPCByName(String name) {
 		List<NPC> ret = new ArrayList<NPC>();
 		Collection<NPC> i = npcs.values();
@@ -191,11 +188,11 @@ public class NPCManager {
 		}
 		return ret;
 	}
-
+	
 	public List<NPC> getNPCs() {
 		return new ArrayList<NPC>(npcs.values());
 	}
-
+	
 	public String getNPCIdFromEntity(org.bukkit.entity.Entity e) {
 		if (e instanceof HumanEntity) {
 			for (String i : npcs.keySet()) {
@@ -206,7 +203,7 @@ public class NPCManager {
 		}
 		return null;
 	}
-
+	
 	public void rename(String id, String name) {
 		if (name.length() > 16) { // Check and nag if name is too long, spawn NPC anyway with shortened name.
 			String tmp = name.substring(0, 16);
@@ -230,12 +227,13 @@ public class NPCManager {
 		}
 		s.everyoneSleeping();
 	}
-
+	
 	public BServer getServer() {
 		return server;
 	}
-
+	
 	public NPCNetworkManager getNPCNetworkManager() {
 		return npcNetworkManager;
 	}
+	
 }
