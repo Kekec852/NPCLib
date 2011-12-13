@@ -1,15 +1,15 @@
-package org.martin.bukkit.npclib.entity;
+package com.topcat.npclib.entity;
 
 import java.util.Iterator;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
-import org.martin.bukkit.npclib.NPCManager;
-import org.martin.bukkit.npclib.pathing.NPCPath;
-import org.martin.bukkit.npclib.pathing.NPCPathFinder;
-import org.martin.bukkit.npclib.pathing.Node;
-import org.martin.bukkit.npclib.pathing.PathReturn;
+import com.topcat.npclib.NPCManager;
+import com.topcat.npclib.pathing.NPCPath;
+import com.topcat.npclib.pathing.NPCPathFinder;
+import com.topcat.npclib.pathing.Node;
+import com.topcat.npclib.pathing.PathReturn;
 
 import net.minecraft.server.Entity;
 

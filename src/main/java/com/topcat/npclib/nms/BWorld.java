@@ -1,4 +1,4 @@
-package org.martin.bukkit.npclib.nms;
+package com.topcat.npclib.nms;
 
 import java.util.ArrayList;
 import java.util.List;

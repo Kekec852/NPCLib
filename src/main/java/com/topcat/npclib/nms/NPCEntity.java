@@ -1,4 +1,4 @@
-package org.martin.bukkit.npclib.nms;
+package com.topcat.npclib.nms;
 
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;

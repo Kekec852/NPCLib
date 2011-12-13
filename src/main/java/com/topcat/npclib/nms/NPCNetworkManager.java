@@ -1,4 +1,4 @@
-package org.martin.bukkit.npclib.nms;
+package com.topcat.npclib.nms;
 
 import java.lang.reflect.Field;
 import java.net.Socket;

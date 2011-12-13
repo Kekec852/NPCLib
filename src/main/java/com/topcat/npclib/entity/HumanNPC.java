@@ -1,4 +1,4 @@
-package org.martin.bukkit.npclib.entity;
+package com.topcat.npclib.entity;
 
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.Packet18ArmAnimation;
@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.getspout.spout.player.SpoutCraftPlayer;
 import org.getspout.spoutapi.player.SpoutPlayer;
-import org.martin.bukkit.npclib.nms.NPCEntity;
+import com.topcat.npclib.nms.NPCEntity;
 
 public class HumanNPC extends NPC {
 	

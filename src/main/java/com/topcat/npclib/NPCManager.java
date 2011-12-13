@@ -1,4 +1,4 @@
-package org.martin.bukkit.npclib;
+package com.topcat.npclib;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -23,11 +23,11 @@ import org.bukkit.event.server.ServerListener;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.WorldListener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.martin.bukkit.npclib.entity.HumanNPC;
-import org.martin.bukkit.npclib.entity.NPC;
-import org.martin.bukkit.npclib.nms.BServer;
-import org.martin.bukkit.npclib.nms.BWorld;
-import org.martin.bukkit.npclib.nms.NPCEntity;
+import com.topcat.npclib.entity.HumanNPC;
+import com.topcat.npclib.entity.NPC;
+import com.topcat.npclib.nms.BServer;
+import com.topcat.npclib.nms.BWorld;
+import com.topcat.npclib.nms.NPCEntity;
 
 /**
  *

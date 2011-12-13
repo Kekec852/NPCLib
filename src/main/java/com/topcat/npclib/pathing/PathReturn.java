@@ -1,4 +1,4 @@
-package org.martin.bukkit.npclib.pathing;
+package com.topcat.npclib.pathing;
 
 public interface PathReturn {
 	

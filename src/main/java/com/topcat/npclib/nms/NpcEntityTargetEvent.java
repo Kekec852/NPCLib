@@ -1,4 +1,4 @@
-package org.martin.bukkit.npclib.nms;
+package com.topcat.npclib.nms;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.EntityTargetEvent;
