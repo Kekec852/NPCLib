@@ -57,7 +57,7 @@ public class NPCManager {
 				for (String i : npcs.keySet()) {
 					Entity j = npcs.get(i).getEntity();
 					j.af();
-					if (j.dead) { 
+					if (j.dead) {
 						toRemove.add(i);
 					}
 				}
@@ -75,7 +75,9 @@ public class NPCManager {
 		if (get != null) {
 			return get;
 		}
-		return new BWorld(world);
+		BWorld bworld = new BWorld(world);
+		bworlds.put(world, bworld);
+		return bworld;
 	}
 
 	private class SL extends ServerListener {
