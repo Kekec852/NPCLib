@@ -12,37 +12,36 @@ import net.minecraft.server.Packet;
  */
 public class NPCNetworkManager extends NetworkManager {
 
-    public NPCNetworkManager() {
-        super(new NullSocket(), "NPC Manager", new NetHandler() {
+	public NPCNetworkManager() {
+		super(new NullSocket(), "NPC Manager", new NetHandler() {
 
-            @Override
-            public boolean c() {
-                return true;
-            }
-            
-        });
-        try {
-            Field f = NetworkManager.class.getDeclaredField("l");
-            f.setAccessible(true);
-            f.set(this, false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+			@Override
+			public boolean c() {
+				return true;
+			}
+		});
+		try {
+			Field f = NetworkManager.class.getDeclaredField("l");
+			f.setAccessible(true);
+			f.set(this, false);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    @Override
-    public void a(NetHandler nethandler) {
-    }
+	@Override
+	public void a(NetHandler nethandler) {
+	}
 
-    @Override
-    public void queue(Packet packet) {
-    }
+	@Override
+	public void queue(Packet packet) {
+	}
 
-    @Override
-    public void a(String s, Object... aobject) {
-    }
+	@Override
+	public void a(String s, Object... aobject) {
+	}
 
-    @Override
-    public void a() {
-    }
+	@Override
+	public void a() {
+	}
 }
