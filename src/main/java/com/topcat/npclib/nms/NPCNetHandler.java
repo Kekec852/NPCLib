@@ -1,4 +1,4 @@
-package com.topcat.npclib;
+package org.martin.bukkit.npclib.nms;
 
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
