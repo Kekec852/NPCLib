@@ -1,10 +1,10 @@
 package com.topcat.npclib.nms;
 
 import com.topcat.npclib.NPCManager;
-import com.topcat.npclib.nms.NPCNetHandler;
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityPlayer;
+import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.WorldServer;
 
 import org.bukkit.craftbukkit.CraftServer;
@@ -21,10 +21,10 @@ public class NPCEntity extends EntityPlayer {
     private long lastBounceTick;
     private int lastBounceId;
 
-    public NPCEntity(NPCManager npcManager, BWorld world, String s) {
-        super(npcManager.getServer().getMCServer(), world.getMCWorld(), s, world.getItemInWorldManager());
+    public NPCEntity(NPCManager npcManager, BWorld world, String s, ItemInWorldManager itemInWorldManager) {
+        super(npcManager.getServer().getMCServer(), world.getMCWorld(), s, itemInWorldManager);
 
-        world.getItemInWorldManager().b(0);
+        itemInWorldManager.b(0);
 
         this.npcManager = npcManager;
         this.netServerHandler = new NPCNetHandler(npcManager, this);

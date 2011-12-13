@@ -15,7 +15,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import net.minecraft.server.Entity;
- 
+import net.minecraft.server.ItemInWorldManager;
+
 import net.minecraft.server.WorldServer;
 
 import org.bukkit.Bukkit;
@@ -46,10 +47,11 @@ public class NPCManager {
 
     public NPCManager(JavaPlugin plugin) {
         server = BServer.getInstance();
-        
+
         npcNetworkManager = new NPCNetworkManager();
         NPCManager.plugin = plugin;
         taskid = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+
             public void run() {
                 HashSet<String> toRemove = new HashSet<String>();
                 for (String i : npcs.keySet()) {
@@ -67,7 +69,7 @@ public class NPCManager {
         Bukkit.getServer().getPluginManager().registerEvent(Event.Type.PLUGIN_DISABLE, new SL(), Priority.Normal, plugin);
         Bukkit.getServer().getPluginManager().registerEvent(Event.Type.CHUNK_LOAD, new WL(), Priority.Normal, plugin);
     }
-    
+
     public BWorld getBWorld(World world) {
         BWorld get = bworlds.get(world);
         if (get != null) {
@@ -75,8 +77,9 @@ public class NPCManager {
         }
         return new BWorld(world);
     }
-    
+
     private class SL extends ServerListener {
+
         @Override
         public void onPluginDisable(PluginDisableEvent event) {
             if (event.getPlugin() == plugin) {
@@ -85,8 +88,9 @@ public class NPCManager {
             }
         }
     }
-    
+
     private class WL extends WorldListener {
+
         @Override
         public void onChunkLoad(ChunkLoadEvent event) {
             for (NPC npc : npcs.values()) {
@@ -120,7 +124,7 @@ public class NPCManager {
                 name = tmp;
             }
             BWorld world = getBWorld(l.getWorld());
-            NPCEntity npcEntity = new NPCEntity(this, world, name);
+            NPCEntity npcEntity = new NPCEntity(this, world, name, new ItemInWorldManager(world.getWorldServer()));
             npcEntity.setPositionRotation(l.getX(), l.getY(), l.getZ(), l.getYaw(), l.getPitch());
             world.getWorldServer().addEntity(npcEntity); //the right way
             NPC npc = new HumanNPC(npcEntity);
@@ -145,17 +149,17 @@ public class NPCManager {
         for (String n : npcs.keySet()) {
             NPC npc = npcs.get(n);
             if (npc instanceof HumanNPC) {
-	            if (npc != null && ((HumanNPC) npc).getName().equals(npcName)) {
-	                toRemove.add(n);
-	                npc.removeFromWorld();
-	            }
+                if (npc != null && ((HumanNPC) npc).getName().equals(npcName)) {
+                    toRemove.add(n);
+                    npc.removeFromWorld();
+                }
             }
         }
         for (String n : toRemove) {
             npcs.remove(n);
         }
     }
-    
+
     public void despawnAll() {
         for (NPC npc : npcs.values()) {
             if (npc != null) {
@@ -177,16 +181,16 @@ public class NPCManager {
         List<NPC> ret = new ArrayList<NPC>();
         Collection<NPC> i = npcs.values();
         for (NPC e : i) {
-        	if (e instanceof HumanNPC) {
-	            if (((HumanNPC) e).getName().equalsIgnoreCase(name)) {
-	                ret.add(e);
-	            }
-        	}
+            if (e instanceof HumanNPC) {
+                if (((HumanNPC) e).getName().equalsIgnoreCase(name)) {
+                    ret.add(e);
+                }
+            }
         }
         return ret;
     }
 
-    public List<NPC> getNPCs(){
+    public List<NPC> getNPCs() {
         return new ArrayList<NPC>(npcs.values());
     }
 
@@ -200,7 +204,7 @@ public class NPCManager {
         }
         return null;
     }
-    
+
     public void rename(String id, String name) {
         if (name.length() > 16) { // Check and nag if name is too long, spawn NPC anyway with shortened name.
             String tmp = name.substring(0, 16);
@@ -228,9 +232,8 @@ public class NPCManager {
     public BServer getServer() {
         return server;
     }
-    
+
     public NPCNetworkManager getNPCNetworkManager() {
         return npcNetworkManager;
     }
-            
 }
