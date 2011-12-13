@@ -1,9 +1,8 @@
-package com.topcat.npclib;
+package com.topcat.npclib.nms;
 
+import com.topcat.npclib.NPCManager;
 import net.minecraft.server.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.NetServerHandler;
-import net.minecraft.server.NetworkManager;
 import net.minecraft.server.Packet;
 import net.minecraft.server.Packet101CloseWindow;
 import net.minecraft.server.Packet102WindowClick;
