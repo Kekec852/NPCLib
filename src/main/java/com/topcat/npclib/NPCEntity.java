@@ -1,4 +1,4 @@
-package org.martin.bukkit.npclib;
+package com.topcat.npclib;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -26,7 +26,7 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.getspout.spout.player.SpoutCraftPlayer;
 import org.getspout.spoutapi.player.SpoutPlayer;
-import org.martin.bukkit.npclib.NPCPath.Node;
+import com.topcat.npclib.NPCPath.Node;
 
 /**
  *
