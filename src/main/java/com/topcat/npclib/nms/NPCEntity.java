@@ -21,7 +21,7 @@ public class NPCEntity extends EntityPlayer {
 	private int lastBounceId;
 	
 	public NPCEntity(NPCManager npcManager, BWorld world, String s, ItemInWorldManager itemInWorldManager) {
-		super(npcManager.getServer().getMCServer(), world.getMCWorld(), s, itemInWorldManager);
+		super(npcManager.getServer().getMCServer(), world.getWorldServer(), s, itemInWorldManager);
 		
 		itemInWorldManager.b(0);
 		

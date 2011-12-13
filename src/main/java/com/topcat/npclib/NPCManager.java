@@ -114,7 +114,7 @@ public class NPCManager {
 	public NPC spawnHumanNPC(String name, Location l, String id) {
 		if (npcs.containsKey(id)) {
 			server.getLogger().log(Level.WARNING, "NPC with that id already exists, existing NPC returned");
-			return (HumanNPC) npcs.get(id);
+			return npcs.get(id);
 		} else {
 			if (name.length() > 16) { // Check and nag if name is too long, spawn NPC anyway with shortened name.
 				String tmp = name.substring(0, 16);

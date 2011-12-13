@@ -27,7 +27,6 @@ public class BWorld {
 	private BServer server;
 	private World world;
 	private CraftWorld cWorld;
-	private net.minecraft.server.World mcWorld;
 	private WorldServer wServer;
 	private WorldProvider wProvider;
 	
@@ -64,10 +63,6 @@ public class BWorld {
 	
 	public WorldServer getWorldServer() {
 		return wServer;
-	}
-	
-	public net.minecraft.server.World getMCWorld() {
-		return mcWorld;
 	}
 	
 	public WorldProvider getWorldProvider() {
