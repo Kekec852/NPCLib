@@ -44,12 +44,11 @@ public class NPCEntity extends EntityPlayer {
     private Location end;
     private int maxIter;
 
-    public NPCEntity(NPCManager npcManager, MinecraftServer minecraftserver, World world, String s, ItemInWorldManager iteminworldmanager) {
-        super(minecraftserver, world, s, iteminworldmanager);
+    public NPCEntity(NPCManager npcManager, BWorld world, String s) {
+        super(npcManager.getServer().getMCServer(), world.getMCWorld(), s, world.getItemInWorldManager());
         this.npcManager = npcManager;
-        npcManager.getServer().getMCServer();
         
-        iteminworldmanager.b(0);
+        world.getItemInWorldManager().b(0);
         NetworkManager netMgr = new NPCNetworkManager(new NullSocket(), "NPC Manager", new NetHandler() {
 
             @Override
@@ -57,7 +56,7 @@ public class NPCEntity extends EntityPlayer {
                 return true;
             }
         });
-        this.netServerHandler = new NPCNetHandler(minecraftserver, netMgr, this);
+        this.netServerHandler = new NPCNetHandler(npcManager.getServer().getMCServer(), netMgr, this);
         this.lastTargetId = -1;
         this.lastBounceId = -1;
         this.lastBounceTick = 0;

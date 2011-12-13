@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import net.minecraft.server.AxisAlignedBB;
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityPlayer;
+import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.WorldProvider;
 import net.minecraft.server.WorldServer;
@@ -30,6 +31,7 @@ public class BWorld {
     private net.minecraft.server.World mcWorld;
     private WorldServer wServer;
     private WorldProvider wProvider;
+    private ItemInWorldManager itemInWorldManager = null;
 
     public BWorld(BServer server, String worldName) {
         this.server = server;
@@ -64,6 +66,13 @@ public class BWorld {
 
     public WorldServer getWorldServer() {
         return wServer;
+    }
+
+    public ItemInWorldManager getItemInWorldManager() {
+        if (itemInWorldManager == null) {
+            return new ItemInWorldManager(getWorldServer());
+        }
+        return itemInWorldManager;
     }
 
     public net.minecraft.server.World getMCWorld() {

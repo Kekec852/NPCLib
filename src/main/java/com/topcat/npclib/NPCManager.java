@@ -112,7 +112,7 @@ public class NPCManager {
                 name = tmp;
             }
             BWorld world = getBWorld(l.getWorld());
-            NPCEntity npcEntity = new NPCEntity(this, server.getMCServer(), world.getWorldServer(), name, new ItemInWorldManager(world.getWorldServer()));
+            NPCEntity npcEntity = new NPCEntity(this, world, name);
             npcEntity.setPositionRotation(l.getX(), l.getY(), l.getZ(), l.getYaw(), l.getPitch());
             world.getWorldServer().addEntity(npcEntity); //the right way
             npcs.put(id, npcEntity);
