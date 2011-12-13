@@ -1,13 +1,10 @@
 package com.topcat.npclib.nms;
 
+import com.topcat.npclib.NPCManager;
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityHuman;
 import net.minecraft.server.EntityPlayer;
 import net.minecraft.server.ItemInWorldManager;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.NetHandler;
-import net.minecraft.server.NetworkManager;
-import net.minecraft.server.World;
 import net.minecraft.server.WorldServer;
 
 import org.bukkit.craftbukkit.CraftServer;
@@ -19,26 +16,23 @@ import org.bukkit.event.entity.EntityTargetEvent;
  */
 public class NPCEntity extends EntityPlayer {
 
+	private NPCManager npcManager;
 	private int lastTargetId;
 	private long lastBounceTick;
 	private int lastBounceId;
 
-	public NPCEntity(MinecraftServer minecraftserver, World world, String s, ItemInWorldManager iteminworldmanager) {
-		super(minecraftserver, world, s, iteminworldmanager);
-		iteminworldmanager.b(0);
-		
-		NetworkManager netMgr = new NPCNetworkManager(new NullSocket(), "NPC Manager", new NetHandler() {
-			@Override
-			public boolean c() {
-				return true;
-			}
-		});
-		this.netServerHandler = new NPCNetHandler(minecraftserver, netMgr, this);
+	public NPCEntity(NPCManager npcManager, BWorld world, String s, ItemInWorldManager itemInWorldManager) {
+		super(npcManager.getServer().getMCServer(), world.getMCWorld(), s, itemInWorldManager);
+
+		itemInWorldManager.b(0);
+
+		this.npcManager = npcManager;
+		this.netServerHandler = new NPCNetHandler(npcManager, this);
 		this.lastTargetId = -1;
 		this.lastBounceId = -1;
 		this.lastBounceTick = 0;
 	}
-	
+
 	public void setBukkitEntity(org.bukkit.entity.Entity entity) {
 		this.bukkitEntity = entity;
 	}
@@ -79,10 +73,9 @@ public class NPCEntity extends EntityPlayer {
 
 		super.c(entity);
 	}
-	
+
 	@Override
 	public void move(double arg0, double arg1, double arg2) {
 		setPosition(arg0, arg1, arg2);
 	}
-
 }

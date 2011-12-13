@@ -15,20 +15,17 @@ import org.bukkit.block.Block;
  * @author Top_Cat
  */
 public class NPCPathFinder extends Thread {
-	
+
 	HashMap<Block, Node> nodes = new HashMap<Block, Node>();
 	ArrayList<Node> path = new ArrayList<Node>();
 	ArrayList<Node> open = new ArrayList<Node>();
 	ArrayList<Node> closed = new ArrayList<Node>();
 	Comparator<Node> nodeComp = new NodeComparator();
 	Node startNode, endNode;
-	
 	public boolean cancel = false;
-	
 	private Location start, end;
 	private int maxIterations;
 	private PathReturn callback;
-	
 
 	public NPCPathFinder(Location start, Location end, int maxIterations, PathReturn callback) {
 		this.start = start;
@@ -36,7 +33,7 @@ public class NPCPathFinder extends Thread {
 		this.maxIterations = maxIterations;
 		this.callback = callback;
 	}
-	
+
 	@Override
 	public void run() {
 		startNode = getNode(start.getBlock());

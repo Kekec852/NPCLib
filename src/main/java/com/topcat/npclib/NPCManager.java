@@ -1,19 +1,27 @@
 package com.topcat.npclib;
 
+import com.topcat.npclib.entity.HumanNPC;
+import com.topcat.npclib.entity.NPC;
+import com.topcat.npclib.nms.BServer;
+import com.topcat.npclib.nms.BWorld;
+import com.topcat.npclib.nms.NPCEntity;
+import com.topcat.npclib.nms.NPCNetworkManager;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import net.minecraft.server.Entity;
-
 import net.minecraft.server.ItemInWorldManager;
+
 import net.minecraft.server.WorldServer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.Event;
@@ -23,11 +31,6 @@ import org.bukkit.event.server.ServerListener;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.WorldListener;
 import org.bukkit.plugin.java.JavaPlugin;
-import com.topcat.npclib.entity.HumanNPC;
-import com.topcat.npclib.entity.NPC;
-import com.topcat.npclib.nms.BServer;
-import com.topcat.npclib.nms.BWorld;
-import com.topcat.npclib.nms.NPCEntity;
 
 /**
  *
@@ -38,12 +41,17 @@ public class NPCManager {
 	private HashMap<String, NPC> npcs = new HashMap<String, NPC>();
 	private BServer server;
 	private int taskid;
+	private Map<World, BWorld> bworlds = new HashMap<World, BWorld>();
+	private NPCNetworkManager npcNetworkManager;
 	public static JavaPlugin plugin;
 
 	public NPCManager(JavaPlugin plugin) {
 		server = BServer.getInstance();
+
+		npcNetworkManager = new NPCNetworkManager();
 		NPCManager.plugin = plugin;
 		taskid = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+
 			public void run() {
 				HashSet<String> toRemove = new HashSet<String>();
 				for (String i : npcs.keySet()) {
@@ -61,8 +69,19 @@ public class NPCManager {
 		Bukkit.getServer().getPluginManager().registerEvent(Event.Type.PLUGIN_DISABLE, new SL(), Priority.Normal, plugin);
 		Bukkit.getServer().getPluginManager().registerEvent(Event.Type.CHUNK_LOAD, new WL(), Priority.Normal, plugin);
 	}
-	
+
+	public BWorld getBWorld(World world) {
+		BWorld get = bworlds.get(world);
+		if (get != null) {
+			return get;
+		}
+		BWorld bworld = new BWorld(world);
+		bworlds.put(world, bworld);
+		return bworld;
+	}
+
 	private class SL extends ServerListener {
+
 		@Override
 		public void onPluginDisable(PluginDisableEvent event) {
 			if (event.getPlugin() == plugin) {
@@ -71,13 +90,14 @@ public class NPCManager {
 			}
 		}
 	}
-	
+
 	private class WL extends WorldListener {
+
 		@Override
 		public void onChunkLoad(ChunkLoadEvent event) {
 			for (NPC npc : npcs.values()) {
 				if (npc != null && event.getChunk() == npc.getBukkitEntity().getLocation().getBlock().getChunk()) {
-					BWorld world = new BWorld(event.getWorld());
+					BWorld world = getBWorld(event.getWorld());
 					world.getWorldServer().addEntity(npc.getEntity());
 				}
 			}
@@ -105,8 +125,8 @@ public class NPCManager {
 				server.getLogger().log(Level.WARNING, name + " has been shortened to " + tmp);
 				name = tmp;
 			}
-			BWorld world = new BWorld(l.getWorld());
-			NPCEntity npcEntity = new NPCEntity(server.getMCServer(), world.getWorldServer(), name, new ItemInWorldManager(world.getWorldServer()));
+			BWorld world = getBWorld(l.getWorld());
+			NPCEntity npcEntity = new NPCEntity(this, world, name, new ItemInWorldManager(world.getWorldServer()));
 			npcEntity.setPositionRotation(l.getX(), l.getY(), l.getZ(), l.getYaw(), l.getPitch());
 			world.getWorldServer().addEntity(npcEntity); //the right way
 			NPC npc = new HumanNPC(npcEntity);
@@ -141,7 +161,7 @@ public class NPCManager {
 			npcs.remove(n);
 		}
 	}
-	
+
 	public void despawnAll() {
 		for (NPC npc : npcs.values()) {
 			if (npc != null) {
@@ -172,7 +192,7 @@ public class NPCManager {
 		return ret;
 	}
 
-	public List<NPC> getNPCs(){
+	public List<NPC> getNPCs() {
 		return new ArrayList<NPC>(npcs.values());
 	}
 
@@ -186,7 +206,7 @@ public class NPCManager {
 		}
 		return null;
 	}
-	
+
 	public void rename(String id, String name) {
 		if (name.length() > 16) { // Check and nag if name is too long, spawn NPC anyway with shortened name.
 			String tmp = name.substring(0, 16);
@@ -196,7 +216,7 @@ public class NPCManager {
 		}
 		HumanNPC npc = (HumanNPC) getNPC(id);
 		npc.setName(name);
-		BWorld b = new BWorld(npc.getBukkitEntity().getLocation().getWorld());
+		BWorld b = getBWorld(npc.getBukkitEntity().getLocation().getWorld());
 		WorldServer s = b.getWorldServer();
 		try {
 			Method m = s.getClass().getDeclaredMethod("d", new Class[]{Entity.class});
@@ -209,5 +229,13 @@ public class NPCManager {
 			ex.printStackTrace();
 		}
 		s.everyoneSleeping();
+	}
+
+	public BServer getServer() {
+		return server;
+	}
+
+	public NPCNetworkManager getNPCNetworkManager() {
+		return npcNetworkManager;
 	}
 }

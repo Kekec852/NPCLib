@@ -1,9 +1,8 @@
 package com.topcat.npclib.nms;
 
+import com.topcat.npclib.NPCManager;
 import net.minecraft.server.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.NetServerHandler;
-import net.minecraft.server.NetworkManager;
 import net.minecraft.server.Packet;
 import net.minecraft.server.Packet101CloseWindow;
 import net.minecraft.server.Packet102WindowClick;
@@ -29,8 +28,8 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
  */
 public class NPCNetHandler extends NetServerHandler {
 
-	public NPCNetHandler(MinecraftServer minecraftserver, NetworkManager networkmanager, EntityPlayer entityplayer) {
-		super(minecraftserver, networkmanager, entityplayer);
+	public NPCNetHandler(NPCManager npcManager, EntityPlayer entityplayer) {
+		super(npcManager.getServer().getMCServer(), npcManager.getNPCNetworkManager(), entityplayer);
 	}
 
 	@Override

@@ -10,9 +10,9 @@ import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.CraftWorld;
 
 public class Node { // Holds data about each block we check
-	
+
 	static List<Material> liquids = new ArrayList<Material>();
-	
+
 	static {
 		liquids.add(Material.WATER);
 		liquids.add(Material.STATIONARY_WATER);
@@ -20,7 +20,6 @@ public class Node { // Holds data about each block we check
 		//liquids.add(Material.STATIONARY_LAVA);
 		liquids.add(Material.LADDER); // Trust me it makes sense
 	}
-	
 	int f, g = 0, h;
 	int xPos, yPos, zPos;
 	Node parent;

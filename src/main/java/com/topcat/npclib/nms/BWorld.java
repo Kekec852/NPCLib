@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import net.minecraft.server.AxisAlignedBB;
 import net.minecraft.server.Entity;
 import net.minecraft.server.EntityPlayer;
+import net.minecraft.server.ItemInWorldManager;
 import net.minecraft.server.PlayerManager;
 import net.minecraft.server.WorldProvider;
 import net.minecraft.server.WorldServer;

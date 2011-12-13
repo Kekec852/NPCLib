@@ -12,8 +12,14 @@ import net.minecraft.server.Packet;
  */
 public class NPCNetworkManager extends NetworkManager {
 
-	public NPCNetworkManager(Socket socket, String s, NetHandler nethandler) {
-		super(socket, s, nethandler);
+	public NPCNetworkManager() {
+		super(new NullSocket(), "NPC Manager", new NetHandler() {
+
+			@Override
+			public boolean c() {
+				return true;
+			}
+		});
 		try {
 			Field f = NetworkManager.class.getDeclaredField("l");
 			f.setAccessible(true);
