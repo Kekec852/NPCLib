@@ -44,6 +44,10 @@ public class NPC {
 		return entity.getBukkitEntity();
 	}
 
+	public void moveTo(Location l) {
+		getBukkitEntity().teleport(l);
+	}
+
 	public void pathFindTo(Location l, PathReturn callback) {
 		pathFindTo(l, 3000, callback);
 	}
