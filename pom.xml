@@ -42,8 +42,8 @@
         
         <dependency>
             <groupId>org.getspout</groupId>
-            <artifactId>spout</artifactId>
-            <version>dev-snapshot</version>
+            <artifactId>spoutplugin</artifactId>
+            <version>dev-SNAPSHOT</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
