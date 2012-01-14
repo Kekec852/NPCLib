@@ -82,6 +82,7 @@ public class BWorld {
 	@SuppressWarnings("unchecked")
 	public void removeEntity(String name, final Player player, JavaPlugin plugin) {
 		server.getServer().getScheduler().callSyncMethod(plugin, new Callable<Object>() {
+			@Override
 			public Object call() throws Exception {
 				Location loc = player.getLocation();
 				CraftWorld craftWorld = (CraftWorld) player.getWorld();
@@ -94,7 +95,7 @@ public class BWorld {
 
 				List<Entity> entities = new ArrayList<Entity>();
 				AxisAlignedBB bb = AxisAlignedBB.a(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius);
-				entities = craftWorld.getHandle().b(craftPlayer.getHandle(), bb);
+				entities = craftWorld.getHandle().getEntities(craftPlayer.getHandle(), bb);
 				for (Entity o : entities) {
 					if (!(o instanceof EntityPlayer)) {
 						o.getBukkitEntity().remove();
