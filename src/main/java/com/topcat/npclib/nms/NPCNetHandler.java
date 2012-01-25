@@ -116,8 +116,8 @@ public class NPCNetHandler extends NetServerHandler {
 	};
 
 	@Override
-	public int b() {
-		return super.b();
+	public int lowPriorityCount() {
+		return super.lowPriorityCount();
 	}
 
 	@Override
