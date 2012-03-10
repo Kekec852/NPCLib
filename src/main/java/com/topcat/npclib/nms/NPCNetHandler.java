@@ -25,7 +25,7 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
 import com.topcat.npclib.NPCManager;
 
 /**
- *
+ * 
  * @author martin
  */
 public class NPCNetHandler extends NetServerHandler {
@@ -68,7 +68,7 @@ public class NPCNetHandler extends NetServerHandler {
 	};
 
 	@Override
-	public void a(Packet packet) {
+	public void onUnhandledPacket(Packet packet) {
 	};
 
 	@Override
@@ -104,7 +104,7 @@ public class NPCNetHandler extends NetServerHandler {
 	};
 
 	@Override
-	public void a(Packet101CloseWindow packet101closewindow) {
+	public void handleContainerClose(Packet101CloseWindow packet101closewindow) {
 	};
 
 	@Override
