@@ -25,7 +25,7 @@
         <repository>
             <id>spout-repo</id>
             <name>Spout Nexus</name>
-            <url>http://repo.getspout.org/</url>
+            <url>http://repo.spout.org/</url>
         </repository>
         
     </repositories>
@@ -34,7 +34,7 @@
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>craftbukkit</artifactId>
-            <version>1.2.3-R0.1</version>
+            <version>1.2.3-R0.3</version>
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
