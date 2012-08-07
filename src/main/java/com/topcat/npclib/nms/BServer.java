@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import net.minecraft.server.DedicatedServer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.NetworkListenThread;
 import net.minecraft.server.PropertyManager;
 import net.minecraft.server.ServerConfigurationManager;
 import net.minecraft.server.WorldServer;
@@ -66,8 +66,8 @@ public class BServer {
 	}
 
 	public void sendConsoleCommand(String cmd) {
-		if (!mcServer.isStopped && MinecraftServer.isRunning(mcServer)) {
-			mcServer.issueCommand(cmd, mcServer);
+		if (mcServer.isRunning()) {
+			((DedicatedServer) mcServer).issueCommand(cmd, mcServer);
 		}
 	}
 
@@ -84,11 +84,7 @@ public class BServer {
 	}
 
 	public PropertyManager getPropertyManager() {
-		return mcServer.propertyManager;
-	}
-
-	public NetworkListenThread getNetworkThread() {
-		return mcServer.networkListenThread;
+		return mcServer.getPropertyManager();
 	}
 
 	public Server getServer() {

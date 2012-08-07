@@ -15,12 +15,12 @@ public class NPCNetworkManager extends NetworkManager {
 	public NPCNetworkManager() {
 		super(new NullSocket(), "NPC Manager", new NetHandler() {
 			@Override
-			public boolean c() {
+			public boolean a() {
 				return true;
 			}
-		});
+		}, null);
 		try {
-			Field f = NetworkManager.class.getDeclaredField("l");
+			Field f = NetworkManager.class.getDeclaredField("m");
 			f.setAccessible(true);
 			f.set(this, false);
 		} catch (Exception e) {

@@ -62,7 +62,7 @@ public class HumanNPC extends NPC {
 	}
 
 	public void setSneaking() {
-		getEntity().setSneak(true);
+		getEntity().setSneaking(true);
 	}
 
 	public SpoutPlayer getSpoutPlayer() {
@@ -97,7 +97,7 @@ public class HumanNPC extends NPC {
 		}
 		getEntity().yaw = (float) (newYaw - 90);
 		getEntity().pitch = (float) newPitch;
-		((EntityPlayer)getEntity()).X = (float)(newYaw - 90);
+		((EntityPlayer)getEntity()).as = (float)(newYaw - 90);
 	}
 
 }
