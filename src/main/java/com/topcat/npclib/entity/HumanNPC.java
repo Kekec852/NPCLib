@@ -1,19 +1,19 @@
 package com.topcat.npclib.entity;
 
-import net.minecraft.server.EntityPlayer;
-import net.minecraft.server.Packet18ArmAnimation;
-import net.minecraft.server.WorldServer;
+import net.minecraft.server.v1_4_6.EntityPlayer;
+import net.minecraft.server.v1_4_6.Packet18ArmAnimation;
+import net.minecraft.server.v1_4_6.WorldServer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.CraftServer;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import org.getspout.spout.player.SpoutCraftPlayer;
+import org.getspout.spoutapi.SpoutManager;
 import org.getspout.spoutapi.player.SpoutPlayer;
 
 import com.topcat.npclib.nms.NPCEntity;
@@ -69,11 +69,12 @@ public class HumanNPC extends NPC {
 		try {
 			Class.forName("org.getspout.spout.Spout");
 
-			if (!(getEntity().getBukkitEntity() instanceof SpoutCraftPlayer)) {
-				((NPCEntity) getEntity()).setBukkitEntity(new SpoutCraftPlayer((CraftServer) Bukkit.getServer(), (EntityPlayer) getEntity()));
+			if(getEntity().getBukkitEntity() instanceof Player) {
+				Player player = (Player)getEntity().getBukkitEntity();
+				SpoutPlayer sp = SpoutManager.getPlayer(player);
+				if(sp.isSpoutCraftEnabled())
+					return sp;
 			}
-
-			return (SpoutPlayer) getEntity().getBukkitEntity();
 		} catch (ClassNotFoundException e) {
 			Bukkit.getServer().getLogger().warning("Cannot get spout player without spout installed");
 		}
@@ -97,7 +98,7 @@ public class HumanNPC extends NPC {
 		}
 		getEntity().yaw = (float) (newYaw - 90);
 		getEntity().pitch = (float) newPitch;
-		((EntityPlayer)getEntity()).as = (float)(newYaw - 90);
+		((EntityPlayer)getEntity()).ay = (float)(newYaw - 90);
 	}
 
 }
