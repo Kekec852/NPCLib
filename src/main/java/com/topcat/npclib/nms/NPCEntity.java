@@ -1,13 +1,14 @@
 package com.topcat.npclib.nms;
 
-import net.minecraft.server.v1_4_6.Entity;
-import net.minecraft.server.v1_4_6.EntityHuman;
-import net.minecraft.server.v1_4_6.EntityPlayer;
-import net.minecraft.server.v1_4_6.EnumGamemode;
-import net.minecraft.server.v1_4_6.PlayerInteractManager;
-import net.minecraft.server.v1_4_6.WorldServer;
+import net.minecraft.server.v1_5_R2.Entity;
+import net.minecraft.server.v1_5_R2.EntityHuman;
+import net.minecraft.server.v1_5_R2.EntityPlayer;
+import net.minecraft.server.v1_5_R2.EnumGamemode;
+import net.minecraft.server.v1_5_R2.PlayerInteractManager;
+import net.minecraft.server.v1_5_R2.WorldServer;
 
-import org.bukkit.craftbukkit.v1_4_6.CraftServer;
+import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_5_R2.entity.CraftEntity;
 import org.bukkit.event.entity.EntityTargetEvent;
 
 import com.topcat.npclib.NPCManager;
@@ -27,7 +28,7 @@ public class NPCEntity extends EntityPlayer {
 
 		itemInWorldManager.b(EnumGamemode.SURVIVAL);
 
-		playerConnection = new NPCNetHandler(npcManager, this);
+		playerConnection = new NPCPlayerConnection(npcManager, this);
 		lastTargetId = -1;
 		lastBounceId = -1;
 		lastBounceTick = 0;
@@ -36,7 +37,7 @@ public class NPCEntity extends EntityPlayer {
 	}
 
 	public void setBukkitEntity(org.bukkit.entity.Entity entity) {
-		bukkitEntity = entity;
+		bukkitEntity = (CraftEntity) entity;
 	}
 
 	@Override
@@ -49,7 +50,7 @@ public class NPCEntity extends EntityPlayer {
 	}
 
 	@Override
-	public void c_(EntityHuman entity) {
+	public void b_(EntityHuman entity) {
 		if ((lastBounceId != entity.id || System.currentTimeMillis() - lastBounceTick > 1000) && entity.getBukkitEntity().getLocation().distanceSquared(getBukkitEntity().getLocation()) <= 1) {
 			EntityTargetEvent event = new NpcEntityTargetEvent(getBukkitEntity(), entity.getBukkitEntity(), NpcEntityTargetEvent.NpcTargetReason.NPC_BOUNCED);
 			CraftServer server = ((WorldServer) world).getServer();
@@ -66,7 +67,7 @@ public class NPCEntity extends EntityPlayer {
 			lastTargetId = entity.id;
 		}
 
-		super.c_(entity);
+		super.b_(entity);
 	}
 
 	@Override

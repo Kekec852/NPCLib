@@ -1,26 +1,26 @@
 package com.topcat.npclib.nms;
 
-import net.minecraft.server.v1_4_6.EntityPlayer;
-import net.minecraft.server.v1_4_6.PlayerConnection;
-import net.minecraft.server.v1_4_6.Packet;
-import net.minecraft.server.v1_4_6.Packet101CloseWindow;
-import net.minecraft.server.v1_4_6.Packet102WindowClick;
-import net.minecraft.server.v1_4_6.Packet106Transaction;
-import net.minecraft.server.v1_4_6.Packet10Flying;
-import net.minecraft.server.v1_4_6.Packet130UpdateSign;
-import net.minecraft.server.v1_4_6.Packet14BlockDig;
-import net.minecraft.server.v1_4_6.Packet15Place;
-import net.minecraft.server.v1_4_6.Packet16BlockItemSwitch;
-import net.minecraft.server.v1_4_6.Packet18ArmAnimation;
-import net.minecraft.server.v1_4_6.Packet19EntityAction;
-import net.minecraft.server.v1_4_6.Packet255KickDisconnect;
-import net.minecraft.server.v1_4_6.Packet3Chat;
-import net.minecraft.server.v1_4_6.Packet7UseEntity;
-import net.minecraft.server.v1_4_6.Packet9Respawn;
+import net.minecraft.server.v1_5_R2.EntityPlayer;
+import net.minecraft.server.v1_5_R2.PlayerConnection;
+import net.minecraft.server.v1_5_R2.Packet;
+import net.minecraft.server.v1_5_R2.Packet101CloseWindow;
+import net.minecraft.server.v1_5_R2.Packet102WindowClick;
+import net.minecraft.server.v1_5_R2.Packet106Transaction;
+import net.minecraft.server.v1_5_R2.Packet10Flying;
+import net.minecraft.server.v1_5_R2.Packet130UpdateSign;
+import net.minecraft.server.v1_5_R2.Packet14BlockDig;
+import net.minecraft.server.v1_5_R2.Packet15Place;
+import net.minecraft.server.v1_5_R2.Packet16BlockItemSwitch;
+import net.minecraft.server.v1_5_R2.Packet18ArmAnimation;
+import net.minecraft.server.v1_5_R2.Packet19EntityAction;
+import net.minecraft.server.v1_5_R2.Packet255KickDisconnect;
+import net.minecraft.server.v1_5_R2.Packet3Chat;
+import net.minecraft.server.v1_5_R2.Packet7UseEntity;
+import net.minecraft.server.v1_5_R2.Packet9Respawn;
 
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_4_6.CraftServer;
-import org.bukkit.craftbukkit.v1_4_6.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_5_R2.entity.CraftPlayer;
 
 import com.topcat.npclib.NPCManager;
 
@@ -28,9 +28,9 @@ import com.topcat.npclib.NPCManager;
  * 
  * @author martin
  */
-public class NPCNetHandler extends PlayerConnection {
+public class NPCPlayerConnection extends PlayerConnection {
 
-	public NPCNetHandler(NPCManager npcManager, EntityPlayer entityplayer) {
+	public NPCPlayerConnection(NPCManager npcManager, EntityPlayer entityplayer) {
 		super(npcManager.getServer().getMCServer(), npcManager.getNPCNetworkManager(), entityplayer);
 	}
 

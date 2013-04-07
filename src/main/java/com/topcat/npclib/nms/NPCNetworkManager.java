@@ -3,9 +3,12 @@ package com.topcat.npclib.nms;
 import java.io.IOException;
 import java.lang.reflect.Field;
 
-import net.minecraft.server.v1_4_6.Connection;
-import net.minecraft.server.v1_4_6.NetworkManager;
-import net.minecraft.server.v1_4_6.Packet;
+import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
+
+import net.minecraft.server.v1_5_R2.Connection;
+import net.minecraft.server.v1_5_R2.NetworkManager;
+import net.minecraft.server.v1_5_R2.Packet;
 
 /**
  *
@@ -14,14 +17,14 @@ import net.minecraft.server.v1_4_6.Packet;
 public class NPCNetworkManager extends NetworkManager {
 
 	public NPCNetworkManager() throws IOException {
-		super(new NullSocket(), "NPC Manager", new Connection() {
+		super(((CraftServer) Bukkit.getServer()).getServer().getLogger(), new NullSocket(), "NPC Manager", new Connection() {
 			@Override
 			public boolean a() {
 				return true;
 			}
 		}, null);
 		try {
-			Field f = NetworkManager.class.getDeclaredField("m");
+			Field f = NetworkManager.class.getDeclaredField("n");
 			f.setAccessible(true);
 			f.set(this, false);
 		} catch (Exception e) {
