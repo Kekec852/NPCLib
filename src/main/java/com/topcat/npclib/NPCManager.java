@@ -9,14 +9,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 
-import net.minecraft.server.v1_5_R2.Entity;
-import net.minecraft.server.v1_5_R2.PlayerInteractManager;
-import net.minecraft.server.v1_5_R2.WorldServer;
+import net.minecraft.server.v1_6_R2.Entity;
+import net.minecraft.server.v1_6_R2.PlayerInteractManager;
+import net.minecraft.server.v1_6_R2.WorldServer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_5_R2.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_6_R2.entity.CraftEntity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -106,6 +106,10 @@ public class NPCManager {
 			}
 		}
 	}
+	
+	public boolean containsNPC(String name) {
+		return npcs.containsKey(name);
+	}
 
 	public NPC spawnHumanNPC(String name, Location l) {
 		int i = 0;
@@ -153,8 +157,8 @@ public class NPCManager {
 		HashSet<String> toRemove = new HashSet<String>();
 		for (String n : npcs.keySet()) {
 			NPC npc = npcs.get(n);
-			if (npc instanceof HumanNPC) {
-				if (npc != null && ((HumanNPC) npc).getName().equals(npcName)) {
+			if (npc != null && npc instanceof HumanNPC) {
+				if (((HumanNPC) npc).getName().equals(npcName)) {
 					toRemove.add(n);
 					npc.removeFromWorld();
 				}

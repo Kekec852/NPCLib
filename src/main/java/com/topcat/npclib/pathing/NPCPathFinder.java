@@ -88,7 +88,7 @@ public class NPCPathFinder extends Thread {
 				Collections.reverse(path);
 			}
 		}
-		if (path.size() == 0) {
+		if (path.isEmpty()) {
 			path.add(endNode);
 		}
 	}
@@ -120,7 +120,7 @@ public class NPCPathFinder extends Thread {
 
 			corner = xZCor1 || xZCor2;
 		} else if (node.xPos != parent.xPos && node.yPos != parent.yPos || node.yPos != parent.yPos && node.zPos != parent.zPos) {
-			corner = node.yPos > parent.yPos ? !getNode(parent.b.getRelative(0, 2, 0)).notsolid : !getNode(node.b.getRelative(0, 2, 0)).notsolid;;
+			corner = node.yPos > parent.yPos ? !getNode(parent.b.getRelative(0, 2, 0)).notsolid : !getNode(node.b.getRelative(0, 2, 0)).notsolid;
 		}
 
 		Node nodeBelow = getNode(node.b.getRelative(0, -1, 0));

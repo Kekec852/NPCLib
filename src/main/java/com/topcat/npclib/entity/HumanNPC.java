@@ -1,22 +1,19 @@
 package com.topcat.npclib.entity;
 
-import net.minecraft.server.v1_5_R2.EntityPlayer;
-import net.minecraft.server.v1_5_R2.Packet18ArmAnimation;
-import net.minecraft.server.v1_5_R2.WorldServer;
+import net.minecraft.server.v1_6_R2.EntityPlayer;
+import net.minecraft.server.v1_6_R2.Packet18ArmAnimation;
+import net.minecraft.server.v1_6_R2.WorldServer;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_5_R2.CraftServer;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import org.getspout.spout.player.SpoutCraftPlayer;
-import org.getspout.spoutapi.player.SpoutPlayer;
-
 import com.topcat.npclib.nms.NPCEntity;
+import java.lang.reflect.Field;
+import net.minecraft.server.v1_6_R2.EntityHuman;
 
 public class HumanNPC extends NPC {
 
@@ -41,11 +38,18 @@ public class HumanNPC extends NPC {
 	}
 
 	public void setName(String name) {
-		((NPCEntity) getEntity()).name = name;
+		try {
+			Class<?> clazz = EntityHuman.class;
+			Field nameField = clazz.getDeclaredField("name");
+			nameField.setAccessible(true);
+			nameField.set((NPCEntity)getEntity(), name);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public String getName() {
-		return ((NPCEntity) getEntity()).name;
+		return ((NPCEntity) getEntity()).getName();
 	}
 
 	public PlayerInventory getInventory() {
@@ -65,21 +69,6 @@ public class HumanNPC extends NPC {
 		getEntity().setSneaking(true);
 	}
 
-	public SpoutPlayer getSpoutPlayer() {
-		try {
-			Class.forName("org.getspout.spout.Spout");
-
-			if (!(getEntity().getBukkitEntity() instanceof SpoutCraftPlayer)) {
-				((NPCEntity) getEntity()).setBukkitEntity(new SpoutCraftPlayer((CraftServer) Bukkit.getServer(), (EntityPlayer) getEntity()));
-			}
-
-			return (SpoutPlayer) getEntity().getBukkitEntity();
-		} catch (ClassNotFoundException e) {
-			Bukkit.getServer().getLogger().warning("Cannot get spout player without spout installed");
-		}
-		return null;
-	}
-
 	public void lookAtPoint(Location point) {
 		if (getEntity().getBukkitEntity().getWorld() != point.getWorld()) {
 			return;
@@ -97,7 +86,7 @@ public class HumanNPC extends NPC {
 		}
 		getEntity().yaw = (float) (newYaw - 90);
 		getEntity().pitch = (float) newPitch;
-		((EntityPlayer)getEntity()).az = (float)(newYaw - 90);
+		((EntityPlayer)getEntity()).aO = (float) (newYaw - 90);
 	}
 
 }
